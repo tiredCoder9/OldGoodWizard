@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61796d6694608945888f02b03446ba8, type: 3}
+  m_Name: AdventureModule
+  m_EditorClassIdentifier: 
+  battleTropes:
+  - {fileID: 11400000, guid: 01f96bf71dcd3254e8b99b99a55eb3ff, type: 2}
+  - {fileID: 11400000, guid: 5a8a71074ebcf674e9fd87a748c8b681, type: 2}
+  - {fileID: 11400000, guid: c5df7c54eb6758b43914cf60aece3db0, type: 2}
+  - {fileID: 11400000, guid: 4594d997f2a06d048bf570add343fe11, type: 2}
+  - {fileID: 11400000, guid: e9112cc2516ec334bbbbfef606cb9444, type: 2}
+  - {fileID: 11400000, guid: 59e839dff2fa5574b9419265bd54407a, type: 2}
+  specialTropes: []
