@@ -7,8 +7,20 @@ using System.Linq;
 public class DialogueVariant
 {
 
-    public string Text;
+    public string text;
     public string actionResultText;
-    ITropeAction action;
+    public bool selected = false;
+    public TextAsset actions;
 
+    public void select()
+    {
+        selected = true;
+        executeActions();
+    }
+
+
+    private void executeActions()
+    {
+
+    }
 }

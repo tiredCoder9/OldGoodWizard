@@ -8,9 +8,13 @@ public class JorneyData
     //этот обьект содержит только данные, аккумулируя в себе всю информацию конкретного путешествия
 
     [ReadOnly] public Hero hero;
+    //идентификатор героя
     public long heroID;
+    //пройденное расстояние
     public float distance = 0;
-
+    //шанс появления события
+    public int tropeChance = 5;
+    //составной идентификатор
     public string id
     {
         get
@@ -19,29 +23,35 @@ public class JorneyData
         }
     }
 
-    public long beginDate=0;
-    public long actualTime { get { return GameManager._GLOBAL_TIME_ - beginDate; } }
-    public long tempTime = 0;
-    public long lastTropeTime = 0;
-    //time delay beetween updates event
-    public long turnTimeDelay = 0;
 
+    //отвечает за внутренее время путешествия
+    public Timer timer;
 
+    //очередь пройденных событий
     public Queue<long> passedTropesID;
+    //текущее событие
     public Trope currentTrope;
+    //модуль ресурсов событий
     public AdventureModule mainModule;
+    //генератор событий
     public AdventureGenerator adventureGenerator;
+    //лог текстовых сообщений событий
     public Diary diary;
 
-    //направление движения персонажа
+    //состояние путешествия - передвижение/происходит событие
     public enum State {moving, standingTrope}
     public State currentState = State.moving;
+    //направление движения вперед/назад
     public enum Dicection { forward=1, backward=-1}
     public Dicection currentDirection = Dicection.forward;
 
+    //сохранение в файловую систему
     public void save()
     {
         HeroDataManager.Instance.saveHeroState(heroID);
         JorneyDataManager.saveJorneyData(id);
     }
+
+    
+    
 }

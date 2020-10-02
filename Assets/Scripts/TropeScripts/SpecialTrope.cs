@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SpecialTrope : Trope
 {
-    public DialogueVariant[] dialogueVariants;
+    [SerializeField]
+    private DialogueVariant[] variants;
+
     
+
 }

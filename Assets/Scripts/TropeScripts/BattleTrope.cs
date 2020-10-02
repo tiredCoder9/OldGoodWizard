@@ -12,11 +12,13 @@ public class BattleTrope : Trope
     [TextArea]
     public string endDescription;
 
-    public override bool done(JorneyData _jorney)
+    public override bool end(JorneyData _jorney)
     {
         if(enemy==null) enemy = Instantiate(ReferenceEnemy);
         //если боевое событие закончено - не продолжать бой
         if (!_jorney.hero.isAlive() || !enemy.isAlive()) return true;
+
+        
         //если после очередной атаки враг погиб 
         Debug.Log("Hero health: " + _jorney.hero.getHealth()+" Enemy health: "+ enemy.getHealth());
         if (enemy.dealDamage(_jorney.hero.getPower()))
@@ -43,7 +45,7 @@ public class BattleTrope : Trope
 
 
 
-    public override void execute(JorneyData _jorney)
+    public override void begin(JorneyData _jorney)
     {
 
         enemy = Instantiate(ReferenceEnemy);

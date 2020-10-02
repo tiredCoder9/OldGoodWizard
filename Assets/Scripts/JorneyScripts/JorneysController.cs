@@ -45,31 +45,31 @@ public class JorneysController : MonoBehaviour
     }
 
 
-
+    //TODO: ВРЕМЕННЫЙ КОД
     private void CreateTestingJorney()
     {
         if (PlayerPrefs.GetInt("firstRunning")==0)
         {
-            Hero hero = new Hero();
-            hero.id = 2;
-            hero.setName("Adrian Fon Zigler");
-            hero.setHealth(10000);
-            hero.setPower(1);
-            string heroSerialized = JsonUtility.ToJson(hero);
+            Hero _hero = new Hero
+            {
+                id = 2,
+            };
+            _hero.setName("Adrian Fon Zigler");
+            _hero.setHealth(10000);
+            _hero.setPower(1);
+            string heroSerialized = JsonUtility.ToJson(_hero);
             if (!Directory.Exists(Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder))
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder);
             }
-            DataController.tryWriteSaveInFile(hero.id.ToString() + ".hr", Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder, heroSerialized);
+            DataController.tryWriteSaveInFile(_hero.id.ToString() + ".hr", Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder, heroSerialized);
 
-            JorneyData jorney = new JorneyData();
-            jorney.heroID = 2;
-            jorney.hero = hero;
-            jorney.lastTropeTime = 0;
-            jorney.tempTime = 0;
-            jorney.distance = 0;
-            jorney.turnTimeDelay = 1;
-            jorney.beginDate = 0;
+            JorneyData jorney = new JorneyData
+            {
+                heroID = 2,
+                hero = _hero,
+                distance = 0,
+            };
             string jorneySerialized = JsonUtility.ToJson(jorney);
             if (!Directory.Exists(Application.persistentDataPath + "/" + JorneyDataManager.jorneysFolderName))
             {

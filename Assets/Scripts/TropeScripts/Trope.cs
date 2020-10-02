@@ -18,8 +18,8 @@ public class Trope : ScriptableObject
 
     public virtual bool isPossible(JorneyData jorney) { return true; }
 
-    public virtual void execute(JorneyData jorney){  DiaryManager.adventureLog(jorney, description);  }
+    public virtual void begin(JorneyData jorney){  DiaryManager.adventureLog(jorney, description);  }
 
-    public virtual bool done(JorneyData jorney) { return true; }
+    public virtual bool end(JorneyData jorney) { return true; }
     
 }
