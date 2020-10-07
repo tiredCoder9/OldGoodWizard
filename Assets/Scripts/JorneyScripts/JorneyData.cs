@@ -31,6 +31,7 @@ public class JorneyData
     public Queue<long> passedTropesID;
     //текущее событие
     public Trope currentTrope;
+    public long currentTropeID=0;
     //модуль ресурсов событий
     public AdventureModule mainModule;
     //генератор событий
@@ -50,8 +51,10 @@ public class JorneyData
     {
         HeroDataManager.Instance.saveHeroState(heroID);
         JorneyDataManager.saveJorneyData(id);
+
     }
 
+    
     
     
 }

@@ -19,7 +19,9 @@ public class AdventureGenerator : MonoBehaviour
 
     private Trope generateBattleTrope(Jorney jorney)
     {
-        return mainModule.battleTropes[Random.Range(0, mainModule.battleTropes.Length)];   
+        long targetID = mainModule.battleTropes[Random.Range(0, mainModule.battleTropes.Length)].id;
+
+        return  TropeManager.getTropeById(targetID);   
     }
 
 

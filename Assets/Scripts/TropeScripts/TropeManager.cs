@@ -5,28 +5,56 @@ using UnityEditor;
 using System.Linq;
 public class TropeManager : MonoBehaviour
 {
-    public int lastTropeId
-    {
-        get
-        {
-            return PlayerPrefs.GetInt("LAST_TROPE_ID");
-        }
-    }
+
+
+    private static Trope[] tropes;
+
+    private static Dictionary<long,Trope> tropesTable;
+    public static long emptyLastID=0;
+
     private void Awake()
     {
-       if(lastTropeId==0) PlayerPrefs.SetInt("LAST_TROPE_ID", 0);
-       int i = lastTropeId;
+
        Trope[] tropes = Resources.FindObjectsOfTypeAll<Trope>();
-       foreach(Trope trope in tropes)
-        {
-            if (trope.id == 0)
+       tropesTable = new Dictionary<long, Trope>();
+
+       //поиск свободного идентификатора
+       foreach(var trop in tropes)
+       {
+            if (trop.id > emptyLastID)
             {
-                i++;
-                trope.id = i;
-                PlayerPrefs.SetInt("LAST_TROPE_ID", i);
+                emptyLastID = trop.id;
             }
-        }
+       }
+        emptyLastID++;
+
+
+        //создание таблицы быстрого доступа к событиям
+       foreach(var trop in tropes)
+       {
+            tropesTable.Add(trop.id, trop);
+       }
     }
+
+
+    public static Trope getTropeById(long _id)
+    {
+
+        if (tropesTable.ContainsKey(_id))
+        {
+            var tropeCopy = Instantiate(tropesTable[_id]);
+            return tropeCopy;
+        }
+
+        Debug.LogError("TROPE MANAGER: Trope with id - " + _id + " doesnt exist");
+        return null;
+    }
+
+
+   
+
+    
+
 }
 
 

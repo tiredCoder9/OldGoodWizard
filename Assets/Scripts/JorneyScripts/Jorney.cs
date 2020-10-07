@@ -13,23 +13,41 @@ public class Jorney : MonoBehaviour
 
         //получение героя через ID
         values.hero = HeroDataManager.Instance.getHeroByID(values.heroID);
+
+        //получение ссылки на генератор
         values.adventureGenerator = GetComponent<AdventureGenerator>();
-        
-        updateJorneyData();
+
+        //получение события через ID
+        values.currentTrope = TropeManager.getTropeById(values.currentTropeID);
+
+        //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
+        synchronizeJorney();
+
+        values.save();
     }
 
     private void Update()
     {
-
-        if (values.timer.turnPassed() && values.hero.isAlive())
-        {
-            turnPath();        
-        }
+        DoUpdate();
     }
 
-    private void LateUpdate()
+
+    private void DoUpdate()
     {
+        if (values.hero.isAlive())
+        {
+            turnPath();
+        }
         values.timer.jorneyTimeContinue();
+    }
+
+
+    private void synchronizeJorney()
+    {
+        while (values.timer.turnPassed())
+        {
+            DoUpdate();
+        }
     }
 
 
@@ -51,17 +69,22 @@ public class Jorney : MonoBehaviour
 
     public void moving()
     {
-        values.distance += (int)values.currentDirection * 0.1f;
-
-        switch (values.currentDirection)
+        //продолжаем путешествие, если начался новый ход 
+        if (values.timer.turnPassed())
         {
-            case JorneyData.Dicection.forward:
-                movingForward();
-                break;
-            case JorneyData.Dicection.backward:
-                movingBackward();
-                break;
+            values.distance += (int)values.currentDirection * 0.1f;
+
+            switch (values.currentDirection)
+            {
+                case JorneyData.Dicection.forward:
+                    movingForward();
+                    break;
+                case JorneyData.Dicection.backward:
+                    movingBackward();
+                    break;
+            }
         }
+
     }
 
     public void movingForward()
@@ -71,6 +94,7 @@ public class Jorney : MonoBehaviour
             values.currentTrope = values.adventureGenerator.getNextTrope(this);
             values.timer.updateLastTropeTime();
             values.currentTrope.begin(values);
+            values.currentTropeID = values.currentTrope.id;
             changeState(JorneyData.State.standingTrope);
         }
     }
@@ -82,7 +106,7 @@ public class Jorney : MonoBehaviour
 
     public void standingTrope()
     {
-        if (values.currentTrope==null || values.currentTrope.end(values))
+        if (values.currentTrope==null || values.currentTrope.ended(values))
         {
             changeState(JorneyData.State.moving);
         }
@@ -92,7 +116,7 @@ public class Jorney : MonoBehaviour
     {
 
         values.currentState = state;
-        updateJorneyData();
+        values.save();
     }
 
 
@@ -101,15 +125,5 @@ public class Jorney : MonoBehaviour
         print(text);
     }
 
-
-    public void updateJorneyData()
-    {
-        values.save();
-    }
-
-    /// <summary>
-    /// Возвращает истинну, если в текущем кадре началась новая минута относительно времени данного путешествия.
-    /// </summary>
-    /// <returns></returns>
 
 }

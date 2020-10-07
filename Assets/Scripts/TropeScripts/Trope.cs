@@ -20,6 +20,6 @@ public class Trope : ScriptableObject
 
     public virtual void begin(JorneyData jorney){  DiaryManager.adventureLog(jorney, description);  }
 
-    public virtual bool end(JorneyData jorney) { return true; }
+    public virtual bool ended(JorneyData jorney) { return true; }
     
 }

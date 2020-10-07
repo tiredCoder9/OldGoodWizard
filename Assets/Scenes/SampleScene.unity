@@ -507,11 +507,13 @@ MonoBehaviour:
     heroID: 0
     distance: 0
     tropeChance: 5
-    beginDate: 0
-    tempTime: 0
-    lastTropeTime: 0
-    turnTimeDelay: 0
+    timer:
+      beginDate: 1062294943
+      tempTime: 0
+      lastTropeTime: 0
+      turnTimeDelay: 0
     currentTrope: {fileID: 0}
+    currentTropeID: 0
     mainModule: {fileID: 0}
     adventureGenerator: {fileID: 0}
     diary:
