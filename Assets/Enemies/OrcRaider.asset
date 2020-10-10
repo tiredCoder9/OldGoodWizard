@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityName: "\u041E\u0440\u043A \u043D\u0430\u043B\u0435\u0442\u0447\u0438\u043A"
   nativePower: 2
-  nativeHealth: 1
+  nativeHealth: 4

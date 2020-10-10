@@ -6,52 +6,69 @@ using System.Linq;
 public class LogDiaryGUI : MonoBehaviour
 {
     public List<LogElement> logElements;
-    public Jorney jorney;
     public GameObject logElemPrefab;
+    public string jorneyID;
+
     private DiaryItem topDiaryItem;
-    private List<DiaryItem> notes;
+    private List<DiaryItem> log;
+    private JorneyData data;
+    
     private void Start()
     {
         logElements = new List<LogElement>();
         ///////////ВРЕМЕННЫЙ КОД
-        startDiaryLog("2_jorney");
+
+        JorneyData data = JorneyDataManager.getJorneyDataByID(jorneyID);
+
+        if (data != null)
+        {
+            startDiaryLog(data);
+        }
+        else
+        { 
+            deleteLogGui();
+        }
     }
 
-    private void startDiaryLog(string logJorneyID)
+    private void startDiaryLog(JorneyData data)
     {
-        //пытаемся получить обьект jorney от контроллера
-        jorney = JorneysController.getJorneyComponentById(logJorneyID);
-        //если обьект был найден - инициализируем для него интерфейс
-        if (jorney != null)
-        {
-            createNotesGUI(jorney.values.diary.notes.Count);
+        log = data.diary.Notes;
+        topDiaryItem = log.Last();
+        updateLogGUI();
 
-            notes = jorney.values.diary.notes;
-            topDiaryItem = notes[notes.Count - 1];
-
-            updateLog();
-        }
     }
 
 
     private void Update()
     {
-        if (notes[notes.Count-1] != topDiaryItem)
+        if (data == null)
         {
-            updateLog();
-            topDiaryItem = notes[notes.Count - 1];
-        }   
+            if (logIsChanged())
+            {
+                updateLogGUI();
+            }
+        }
+        else
+        {
+            print("GUI: Jorney with id " + jorneyID + " not found!");
+            deleteLogGui();
+        }
+
+    }
+
+
+    private bool logIsChanged()
+    {
+        return topDiaryItem != log.Last();
     }
 
 
 
-
-
-    public void createNotesGUI(int count)
+    public void tryExtendLog()
     {
-        if (count > logElements.Count)
+        if (log.Count > logElements.Count)
         {
-            while (logElements.Count != count)
+            while (logElements.Count != log.Count)
             {
                 GameObject _logObject = Instantiate(logElemPrefab, transform);
                 var _logElement = _logObject.GetComponent<LogElement>();
@@ -60,20 +77,24 @@ public class LogDiaryGUI : MonoBehaviour
         }
     }
 
-    private void updateLog()
+    private void updateLogGUI()
     {
-        //получаем текущие записи из дневника
-        List<DiaryItem> _notes = jorney.values.diary.notes;
+
         //создаем новые элементы интерфейса для каждой записи, если их не хватает.
-        createNotesGUI(_notes.Count);
+        tryExtendLog();
+
         //изменяем содержание каждого элемента на записи из дневника
-        for(int i=0; i<_notes.Count; i++)
+        for(int i=0; i<log.Count; i++)
         {
-            logElements[i].setContent(_notes[i]);
+            logElements[i].setContent(log[i]);
         }
-          
+
+        topDiaryItem = log.Last();
     }
 
 
-
+    public void deleteLogGui()
+    {
+        Destroy(this.gameObject);
+    }
 }

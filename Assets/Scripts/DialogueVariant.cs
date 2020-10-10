@@ -6,21 +6,21 @@ using System.Linq;
 [System.Serializable]
 public class DialogueVariant
 {
-
     public string text;
     public string actionResultText;
-    public bool selected = false;
-    public TextAsset actions;
+    public bool IsSelected { get { return selected; } }
+
+    private bool selected = false;
+    private TextAsset actions;
 
     public void select()
     {
         selected = true;
-        executeActions();
     }
 
 
-    private void executeActions()
+    public void executeActions()
     {
-
+        //TODO: добавить событию уникальное поведение
     }
 }

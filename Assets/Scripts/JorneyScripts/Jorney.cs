@@ -39,7 +39,11 @@ public class Jorney : MonoBehaviour
             turnPath();
         }
         values.timer.jorneyTimeContinue();
+
     }
+
+
+
 
 
     private void synchronizeJorney()

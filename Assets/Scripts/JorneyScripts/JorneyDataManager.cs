@@ -76,7 +76,7 @@ public class JorneyDataManager : MonoBehaviour
 
     public static JorneyData getJorneyDataByID(string _jorneyID)
     {
-        return jorneysDataList.First(jorn => jorn.id == _jorneyID);
+        return jorneysDataList.FirstOrDefault(jorn => jorn.id == _jorneyID);
     }
 
     /// <summary>

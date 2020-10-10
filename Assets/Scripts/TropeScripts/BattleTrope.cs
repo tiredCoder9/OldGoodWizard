@@ -62,4 +62,12 @@ public class BattleTrope : Trope
     }
 
 
+    public override Trope getCopy()
+    {
+        BattleTrope trope = Instantiate(this);
+        trope.enemy = Instantiate(enemy);
+        return trope;
+    }
+
+
 }

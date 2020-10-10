@@ -42,11 +42,11 @@ public class TropeManager : MonoBehaviour
 
         if (tropesTable.ContainsKey(_id))
         {
-            var tropeCopy = Instantiate(tropesTable[_id]);
+            var tropeCopy = tropesTable[_id].getCopy();
             return tropeCopy;
         }
 
-        Debug.LogError("TROPE MANAGER: Trope with id - " + _id + " doesnt exist");
+        Debug.Log("TROPE MANAGER: Trope with id - " + _id + " doesnt exist");
         return null;
     }
 

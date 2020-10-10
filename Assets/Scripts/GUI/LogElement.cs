@@ -5,11 +5,12 @@ using TMPro;
 public class LogElement : MonoBehaviour
 {
     private TMP_Text textRef;
-
+  
 
     public void setContent(DiaryItem _logContent)
     {
         textRef = GetComponentInChildren<TMP_Text>();
-        textRef.SetText(_logContent.text);
+        textRef.SetText(_logContent.getText());
     }
+
 }
