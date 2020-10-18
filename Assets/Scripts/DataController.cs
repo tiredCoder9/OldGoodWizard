@@ -4,15 +4,11 @@ using UnityEngine;
 using System.IO;
 public class DataController
 {
-
-
-  
-
     public static bool tryWriteSaveInFile(string fileName, string path,string saveText)
     {
         if (!File.Exists(path + "/" + fileName))
         {
-            Debug.LogWarning("HERO SAVE MANAGER: JSON save file not found. New save file created ->" + fileName);
+            Debug.LogWarning("DATA CONTROLLER: JSON save file not found. New save file created ->" + fileName);
         }
 
         File.WriteAllText(path + "/" + fileName, saveText);

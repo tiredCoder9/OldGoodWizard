@@ -14,6 +14,11 @@ public class JorneysController : MonoBehaviour
     {
         CreateTestingJorney();
 
+        //TODO: перенести
+        HeroDataManager.Instance.LoadData();
+        JorneyDataManager.Instance.LoadData();
+
+
         jorneysObjects = new List<GameObject>();
         jorneysComponents = new List<Jorney>();
         jorneysComponents.DefaultIfEmpty(null);
@@ -24,24 +29,33 @@ public class JorneysController : MonoBehaviour
 
     void initializeJorneys()
     {
-        foreach(var jorney in JorneyDataManager.GetJorneys())
-        {
-            GameObject _jorneyPatternObject = Instantiate(jorneyPrefab);
+        
 
-            Jorney _jorneyComponent =_jorneyPatternObject.GetComponent<Jorney>();
-            jorneysComponents.Add(_jorneyComponent);
-
-            jorney.adventureGenerator = _jorneyPatternObject.GetComponent<AdventureGenerator>();
-            _jorneyComponent.values = jorney;
-
-            jorneysObjects.Add(_jorneyPatternObject);
+        foreach (var jorney in JorneyDataManager.Instance.GetJorneys())
+        { 
+            initilize(jorney);
         }
     }
 
 
-    public static Jorney getJorneyComponentById(string jorneyID)
+
+    public void initilize(JorneyData jorney)
     {
-        return jorneysComponents.FirstOrDefault(jorney => jorney.values.id == jorneyID);
+        GameObject _jorneyPatternObject = Instantiate(jorneyPrefab);
+
+        Jorney _jorneyComponent = _jorneyPatternObject.GetComponent<Jorney>();
+        jorneysComponents.Add(_jorneyComponent);
+
+        //получение ссылки на генератор
+        _jorneyComponent.generator = _jorneyPatternObject.GetComponent<AdventureGenerator>();
+        _jorneyComponent.values = jorney;
+
+        jorneysObjects.Add(_jorneyPatternObject);
+    }
+
+    public static Jorney getJorneyComponentById(Id id)
+    {
+        return jorneysComponents.FirstOrDefault(jorney => jorney.values.testID.get() == id.get());
     }
 
 
@@ -50,33 +64,34 @@ public class JorneysController : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("firstRunning")==0)
         {
+            FileNameFormat format = new FileNameFormat("dt_", string.Empty);
+
+            Id heroID = new Id(2.ToString());
+
             Hero _hero = new Hero
             {
-                id = 2,
+                testID = heroID,
             };
             _hero.setName("Adrian Fon Zigler");
             _hero.setHealth(10000);
             _hero.setPower(1);
             string heroSerialized = JsonUtility.ToJson(_hero);
-            if (!Directory.Exists(Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder))
+            if (!Directory.Exists(Application.persistentDataPath + "/" + typeof(Hero).Name + "s"))
             {
-                Directory.CreateDirectory(Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder);
+                Directory.CreateDirectory(Application.persistentDataPath + "/" + typeof(Hero).Name + "s");
             }
-            DataController.tryWriteSaveInFile(_hero.id.ToString() + ".hr", Application.persistentDataPath + "/" + HeroDataManager.SaveHeroesFolder, heroSerialized);
 
-            JorneyData jorney = new JorneyData
-            {
-                heroID = 2,
-                hero = _hero,
-                distance = 0,
-            };
+            Id testHeroID = new Id("jorney" + 2);
+
+            JorneyData jorney = new JorneyData(testHeroID);
+      
             string jorneySerialized = JsonUtility.ToJson(jorney);
-            if (!Directory.Exists(Application.persistentDataPath + "/" + JorneyDataManager.jorneysFolderName))
+            if (!Directory.Exists(Application.persistentDataPath + "/" + typeof(JorneyData).Name + "s"))
             {
-                Directory.CreateDirectory(Application.persistentDataPath + "/" + JorneyDataManager.jorneysFolderName);
+                Directory.CreateDirectory(Application.persistentDataPath + "/" + "JorneyDatas");
             }
 
-            DataController.tryWriteSaveInFile(jorney.id + ".jor", Application.persistentDataPath + "/" + JorneyDataManager.jorneysFolderName, jorneySerialized);
+            JsonTool.save<JorneyData>(jorney, jorney.testID.get(), Application.persistentDataPath + "/" + typeof(JorneyData).Name + "s", format);
             Debug.Log("JORNEY CONTROLLER: testing jorney created!");
             PlayerPrefs.SetInt("firstRunning", 1);
         }

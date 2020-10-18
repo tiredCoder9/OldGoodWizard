@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestItem : ScriptableObject
+public interface IDataManager
 {
-    public string name;
+    void LoadData();
 }

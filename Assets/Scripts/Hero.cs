@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Hero
+public class Hero: Saveable
 {
 
     [SerializeField]
@@ -46,6 +46,5 @@ public class Hero
     }
 
     public bool isAlive() { return nativeHealth > 0; }
-
 
 }

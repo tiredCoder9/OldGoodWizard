@@ -7,20 +7,15 @@ public class Jorney : MonoBehaviour
 {
 
     [ReadOnly] public JorneyData values;
+    public AdventureGenerator generator { get; set; }
 
     private void Start()
     {
-
-        //получение героя через ID
-        values.hero = HeroDataManager.Instance.getHeroByID(values.heroID);
-
-        //получение ссылки на генератор
-        values.adventureGenerator = GetComponent<AdventureGenerator>();
-
-        //получение события через ID
-        values.currentTrope = TropeManager.getTropeById(values.currentTropeID);
+        values.load();
 
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
+
+
         synchronizeJorney();
 
         values.save();
@@ -95,11 +90,15 @@ public class Jorney : MonoBehaviour
     {
         if(Randomiser.withChance(values.tropeChance + values.timer.timeSinceLastTrope * 0.01f))
         {
-            values.currentTrope = values.adventureGenerator.getNextTrope(this);
-            values.timer.updateLastTropeTime();
-            values.currentTrope.begin(values);
+            values.currentTrope = generator.getNextTrope(values);
+            values.timer.updateLastTropeTime();      
             values.currentTropeID = values.currentTrope.id;
+
+            values.currentTrope.begin(values);
+          
             changeState(JorneyData.State.standingTrope);
+
+            
         }
     }
 

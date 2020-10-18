@@ -9,6 +9,7 @@ public class BattleTrope : Trope
     public Enemy enemy;
     [TextArea]
     public string endDescription;
+    //public BattleTropeData data;
 
     public override bool ended(JorneyData _jorney)
     {
@@ -56,12 +57,6 @@ public class BattleTrope : Trope
 
     }
 
-    public override bool isPossible(JorneyData _jorney)
-    {
-        return true;
-    }
-
-
     public override Trope getCopy()
     {
         BattleTrope trope = Instantiate(this);
@@ -71,3 +66,31 @@ public class BattleTrope : Trope
 
 
 }
+
+[System.Serializable]
+public class BattleTropeData
+{
+    [SerializeField]
+    public Enemy enemy;
+
+    public string serializedEnemy;
+    
+    public void serializeProperties()
+    { 
+        serializedEnemy = JsonUtility.ToJson(enemy);
+    }
+
+
+    public void load(Id id)
+    {
+
+    }
+
+    public void save(Id id)
+    {
+        this.serializeProperties();
+        JsonTool.save<BattleTropeData>(this, id.get() + "_tropeData", Application.persistentDataPath + "/JorneyDatas", FileNameFormat.Default);
+    }
+
+}
+

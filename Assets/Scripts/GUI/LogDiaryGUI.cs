@@ -7,10 +7,10 @@ public class LogDiaryGUI : MonoBehaviour
 {
     public List<LogElement> logElements;
     public GameObject logElemPrefab;
-    public string jorneyID;
+    public Id jorneyID;
 
     private DiaryItem topDiaryItem;
-    private List<DiaryItem> log;
+    private Diary log;
     private JorneyData data;
     
     private void Start()
@@ -18,7 +18,7 @@ public class LogDiaryGUI : MonoBehaviour
         logElements = new List<LogElement>();
         ///////////ВРЕМЕННЫЙ КОД
 
-        JorneyData data = JorneyDataManager.getJorneyDataByID(jorneyID);
+        JorneyData data = JorneyDataManager.Instance.getJorneyDataByID(jorneyID);
 
         if (data != null)
         {
@@ -32,8 +32,9 @@ public class LogDiaryGUI : MonoBehaviour
 
     private void startDiaryLog(JorneyData data)
     {
-        log = data.diary.Notes;
-        topDiaryItem = log.Last();
+        log = data.diary;
+        topDiaryItem = log.getLast();
+        
         updateLogGUI();
 
     }
@@ -59,16 +60,16 @@ public class LogDiaryGUI : MonoBehaviour
 
     private bool logIsChanged()
     {
-        return topDiaryItem != log.Last();
+        return topDiaryItem != log.getLast(); ;
     }
 
 
 
     public void tryExtendLog()
     {
-        if (log.Count > logElements.Count)
+        if (log.getCount() > logElements.Count)
         {
-            while (logElements.Count != log.Count)
+            while (logElements.Count != log.getCount())
             {
                 GameObject _logObject = Instantiate(logElemPrefab, transform);
                 var _logElement = _logObject.GetComponent<LogElement>();
@@ -84,12 +85,11 @@ public class LogDiaryGUI : MonoBehaviour
         tryExtendLog();
 
         //изменяем содержание каждого элемента на записи из дневника
-        for(int i=0; i<log.Count; i++)
+        for(int i=0; i<log.getCount(); i++)
         {
-            logElements[i].setContent(log[i]);
+            logElements[i].setContent(log.Notes[i]);
         }
 
-        topDiaryItem = log.Last();
     }
 
 

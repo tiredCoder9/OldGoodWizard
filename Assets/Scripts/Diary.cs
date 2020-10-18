@@ -11,10 +11,13 @@ public class Diary
     public int noteMaxCount=30;
     [SerializeField]
     private List<DiaryItem> notes;
+    private DiaryItem lastElement;
+
 
     public void addElement(DiaryItem noteDiary)
     {
         if (notes == null) notes = new List<DiaryItem>();
+        lastElement = noteDiary;
         notes.Add(noteDiary);
         if (notes.Count > noteMaxCount)
         {
@@ -23,5 +26,17 @@ public class Diary
         
         
     }
+
+
+    public DiaryItem getLast()
+    {
+        return lastElement;
+    }
+
+    public int getCount()
+    {
+        return notes.Count;
+    }
+
 
 }

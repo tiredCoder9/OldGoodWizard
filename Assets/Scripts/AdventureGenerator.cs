@@ -11,17 +11,16 @@ public class AdventureGenerator : MonoBehaviour
 
     
 
-    public Trope getNextTrope(Jorney jorney)
+    public Trope getNextTrope(JorneyData jorney)
     {
         return generateBattleTrope(jorney);
     }
 
 
-    private Trope generateBattleTrope(Jorney jorney)
+    private Trope generateBattleTrope(JorneyData jorney)
     {
         long targetID = mainModule.battleTropes[Random.Range(0, mainModule.battleTropes.Length)].id;
-
-        return  TropeManager.getTropeById(targetID);   
+        return TropeManager.getTropeById(targetID);
     }
 
 

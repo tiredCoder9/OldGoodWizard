@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 14175738}
   - component: {fileID: 14175737}
+  - component: {fileID: 14175739}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -153,25 +154,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jorneyToCreate:
-    hero:
-      portrait: {fileID: 0}
-      id: 0
-      entityName: 
-      nativePower: 0
-      nativeHealth: 0
-      nativeSanity: 0
-    heroID: 2
+    testID:
+      value: jorney2
+    heroID:
+      value: 2
     distance: 0
     tropeChance: 30
     timer:
-      beginDate: 1062299118
+      beginDate: 0
       tempTime: 0
       lastTropeTime: 0
       turnTimeDelay: 0
     currentTrope: {fileID: 0}
     currentTropeID: 0
     mainModule: {fileID: 0}
-    adventureGenerator: {fileID: 0}
     diary:
       noteMaxCount: 30
       notes: []
@@ -191,6 +187,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14175739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14175736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 897c0b51216e0354abdb6b9902ae449a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hero:
+    testID:
+      value: 2
+    portrait: {fileID: 0}
+    id: 2
+    entityName: Artur The Great
+    nativePower: 2
+    nativeHealth: 10000
+    nativeSanity: 10000
 --- !u!1 &43771914
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +467,8 @@ MonoBehaviour:
   logElements: []
   logElemPrefab: {fileID: 2470356429476391558, guid: 847597fe5faf10140b98b49eaf0db77d,
     type: 3}
-  jorneyID: 2_jorney
+  jorneyID:
+    value: jorney2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,31 +582,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ce3dd6fe6db0349bc706121dcf41db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testJorney:
-    hero:
-      portrait: {fileID: 0}
-      id: 0
-      entityName: 
-      nativePower: 0
-      nativeHealth: 0
-      nativeSanity: 0
-    heroID: 0
-    distance: 0
-    tropeChance: 5
-    timer:
-      beginDate: 1062294943
-      tempTime: 0
-      lastTropeTime: 0
-      turnTimeDelay: 0
-    currentTrope: {fileID: 0}
-    currentTropeID: 0
-    mainModule: {fileID: 0}
-    adventureGenerator: {fileID: 0}
-    diary:
-      noteMaxCount: 30
-      notes: []
-    currentState: 0
-    currentDirection: 1
 --- !u!4 &603684114
 Transform:
   m_ObjectHideFlags: 0
@@ -841,16 +834,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51141dc410b66b45bf5a1c40dcf4f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  save: {fileID: 11400000, guid: 789d434282a38c34b909077de8267bf2, type: 2}
-  temptime: 0
-  heroID: 1
-  heroTest:
-    portrait: {fileID: 0}
-    id: 0
-    entityName: 
-    nativePower: 1
-    nativeHealth: 3
-    nativeSanity: 1
 --- !u!4 &1182228702
 Transform:
   m_ObjectHideFlags: 0

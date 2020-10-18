@@ -16,7 +16,8 @@ public class HeroCreatorEditor : Editor
         base.OnInspectorGUI();
         if(GUILayout.Button("Create hero"))
         {
-            if (creator.createHero()) Debug.Log("HERO CREATOR: New hero "+creator.hero.getName()+" id:"+creator.hero.id+" created!");
+            creator.createHero();
+            Debug.Log("HERO CREATOR: New hero "+creator.hero.getName()+" id:"+creator.hero.id+" created!");
         }
     }
 }

@@ -34,6 +34,8 @@ public class TropeManager : MonoBehaviour
        {
             tropesTable.Add(trop.id, trop);
        }
+
+       
     }
 
 
