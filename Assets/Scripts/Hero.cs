@@ -1,50 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 [System.Serializable]
-public class Hero: Saveable
+public class Hero: Entity
 {
 
-    [SerializeField]
+    [SerializeField] [JsonProperty] private int nativeSanity = 1;
+    [SerializeField] [JsonProperty] private string portraitSpriteName;
+
+    //
+    [SerializeField] 
     private Sprite portrait;
-    public long id;
-    [SerializeField]
-    protected string entityName;
-    [SerializeField]
+    //
 
-    protected int nativePower = 0;
-    [SerializeField]
-    protected int nativeHealth = 0; 
-    [SerializeField]
-    private int nativeSanity = 0;
+    
+    public Sprite getPortrait() { return portrait; }
 
-    //TODO: добавить учет предметов
-    public int getHealth() { return nativeHealth; }
-    public int getPower() { return nativePower; }
-
-    public void setHealth(int _health) { nativeHealth = _health; }
-    public void setPower(int _power) { nativePower = _power; }
-    public string getName() { return entityName; }
-    public void setName(string _name) { entityName = _name; }
-
-
-    /// <summary>
-    /// Метод наносит сущности урон, если урон оказался смертельным, то метод возвращает True.
-    /// </summary>
-    public bool dealDamage(int _damage)
+    [JsonConstructor]
+    public Hero(Id _id, string name, int power, int health, int sanity, string portraitSpriteName)
     {
-
-        nativeHealth -= _damage;
-        if (nativeHealth <= 0)
-        {
-            nativeHealth = 0;
-            return true;
-        }
-        return false;
-
+        this._id = _id;
+        this.entityName = name;
+        this.nativeHealth = health;
+        this.nativePower = power;
+        this.nativeSanity = sanity;
+        this.portraitSpriteName = portraitSpriteName;
+        portrait = Resources.Load<Sprite>("Portraits/" + portraitSpriteName);
     }
-
-    public bool isAlive() { return nativeHealth > 0; }
 
 }

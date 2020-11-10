@@ -32,7 +32,7 @@ public class LogDiaryGUI : MonoBehaviour
 
     private void startDiaryLog(JorneyData data)
     {
-        log = data.diary;
+        log = data.Diary;
         topDiaryItem = log.getLast();
         
         updateLogGUI();

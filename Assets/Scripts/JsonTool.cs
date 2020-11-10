@@ -15,10 +15,9 @@ public class JsonTool
 
         foreach(var file in dir.GetFiles())
         {
-            Debug.Log(file.Name);
             if (format.IsFormatted(file.Name))
             {
-                string serializedObject = DataController.tryReadSaveFromFile(file.Name, path);
+                string serializedObject = FileSystemFacade.tryReadSaveFromFile(file.Name, path);
                 T obj = JsonUtility.FromJson<T>(serializedObject);
 
                 objects.Add(obj);
@@ -37,7 +36,7 @@ public class JsonTool
         string serializedObject = JsonUtility.ToJson(obj);
         string formattedName = format.formateName(name);
 
-        DataController.tryWriteSaveInFile(formattedName, path, serializedObject);
+        FileSystemFacade.tryWriteSaveInFile(formattedName, path, serializedObject);
     }
 
     public static void remove<T>(T obj)

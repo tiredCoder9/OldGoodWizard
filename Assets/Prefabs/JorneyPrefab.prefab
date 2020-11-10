@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa9c43703e0d9446a461d02f0d1b499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainModule: {fileID: 11400000, guid: fb9d9ca96ff5fdb46be637826cbf0c3c, type: 2}
   tropes: {fileID: 0}
+  testEncounter: {fileID: 11400000, guid: 19e77a5c7f4c2744b91f9f90c120cb6d, type: 2}
+  testEnding: {fileID: 11400000, guid: 863d082989a467d4a9ca42268b2cc3c1, type: 2}
+  descriptions: {fileID: 11400000, guid: a25846eab6c147445b0d854d0539f2e5, type: 2}
 --- !u!114 &7930871419853720926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,20 +61,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   values:
-    hero:
-      portrait: {fileID: 0}
-      id: 0
-      entityName: 
-      nativePower: 0
-      nativeHealth: 0
-      nativeSanity: 0
-    heroID: 0
+    testID:
+      value: 
+    heroID:
+      value: 
     distance: 0
-    beginDate: 0
-    tempTime: 0
-    lastTropeTime: 0
-    turnTimeDelay: 0
-    currentTrope: {fileID: 0}
+    tropeChance: 0
+    timer:
+      beginDate: 1062320935
+      tempTime: 0
+      lastTropeTime: 0
+      turnTimeDelay: 0
+    currentTrope:
+      id:
+        value: 
+      tropeType: 0
+      _isUsed: 0
+    currentTropeID:
+      value: 
     mainModule: {fileID: 0}
-    adventureGenerator: {fileID: 0}
+    diary:
+      noteMaxCount: 30
+      notes: []
+    currentState: 0
     currentDirection: 1

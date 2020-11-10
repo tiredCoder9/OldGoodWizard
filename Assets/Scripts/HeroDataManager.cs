@@ -6,17 +6,21 @@ using System.IO;
 
 public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
 {
-    private GlobalContentLoader<Hero> contentLoader;
+    private ContentLoader<Hero> contentLoader;
+
+    [ReadOnly] public List<Hero> loadedHeroes;
 
     private HeroDataManager()
     {
-        contentLoader = new GlobalContentLoader<Hero>();
+        contentLoader = new ContentLoader<Hero>();
     }
 
 
     public void LoadData()
     {
         contentLoader.Initialize();
+
+        loadedHeroes = contentLoader.getObjectsList();
     }
 
     public void saveHeroState(Id _id)
@@ -42,7 +46,12 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
     public void addNewHeroToData(Hero hero)
     {
         contentLoader.AddObject(hero);
-        contentLoader.saveObject(hero.testID);
+        contentLoader.saveObject(hero.Id);
+    }
+
+    public List<Hero> getObjects()
+    {
+        return contentLoader.getObjectsList();
     }
 
 

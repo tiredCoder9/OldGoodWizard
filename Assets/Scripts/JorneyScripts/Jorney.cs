@@ -11,14 +11,12 @@ public class Jorney : MonoBehaviour
 
     private void Start()
     {
-        values.load();
 
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
-
-
         synchronizeJorney();
 
         values.save();
+        
     }
 
     private void Update()
@@ -27,25 +25,37 @@ public class Jorney : MonoBehaviour
     }
 
 
-    private void DoUpdate()
+    //не сохраняет данные, используется когда происходит синхронизация времени 
+    private void DynamicUpdate()
     {
-        if (values.hero.isAlive())
+
+        if (values.Hero.isAlive())
         {
             turnPath();
         }
-        values.timer.jorneyTimeContinue();
-
+        values.Timer.jorneyTimeContinue();
     }
 
+
+ 
+    private void DoUpdate()
+    {
+        if (values.Hero.isAlive())
+        {
+            turnPath();
+            if(values.Timer.turnPassed()) values.save();
+        }
+        values.Timer.jorneyTimeContinue();
+    }
 
 
 
 
     private void synchronizeJorney()
     {
-        while (values.timer.turnPassed())
+        while (values.Timer.turnPassed())
         {
-            DoUpdate();
+            DynamicUpdate();
         }
     }
 
@@ -54,13 +64,13 @@ public class Jorney : MonoBehaviour
     private void turnPath()
     {
      
-        switch (values.currentState)
+        switch (values.CurrentState)
         {
-            case JorneyData.State.moving:
+            case JorneyData.JorneyState.moving:
                 moving();
                 break;
 
-            case JorneyData.State.standingTrope:
+            case JorneyData.JorneyState.standingTrope:
                 standingTrope();
                 break;
         }
@@ -69,16 +79,16 @@ public class Jorney : MonoBehaviour
     public void moving()
     {
         //продолжаем путешествие, если начался новый ход 
-        if (values.timer.turnPassed())
+        if (values.Timer.turnPassed())
         {
-            values.distance += (int)values.currentDirection * 0.1f;
+            values.Distance += (int)values.CurrentDirection * 0.1f;
 
-            switch (values.currentDirection)
+            switch (values.CurrentDirection)
             {
-                case JorneyData.Dicection.forward:
+                case JorneyData.MovingDirection.forward:
                     movingForward();
                     break;
-                case JorneyData.Dicection.backward:
+                case JorneyData.MovingDirection.backward:
                     movingBackward();
                     break;
             }
@@ -88,15 +98,13 @@ public class Jorney : MonoBehaviour
 
     public void movingForward()
     {
-        if(Randomiser.withChance(values.tropeChance + values.timer.timeSinceLastTrope * 0.01f))
+        if(Randomiser.withChance(values.TropeChance + values.Timer.timeSinceLastTrope * 0.01f))
         {
-            values.currentTrope = generator.getNextTrope(values);
-            values.timer.updateLastTropeTime();      
-            values.currentTropeID = values.currentTrope.id;
-
-            values.currentTrope.begin(values);
+            values.setCurrentTrope(generator.getNextTrope(values));
+            values.Timer.updateLastTropeTime();      
+            values.CurrentTrope.begin(values);
           
-            changeState(JorneyData.State.standingTrope);
+            changeState(JorneyData.JorneyState.standingTrope);
 
             
         }
@@ -109,16 +117,16 @@ public class Jorney : MonoBehaviour
 
     public void standingTrope()
     {
-        if (values.currentTrope==null || values.currentTrope.ended(values))
+        if (values.CurrentTrope==null || values.CurrentTrope.ended(values))
         {
-            changeState(JorneyData.State.moving);
+            changeState(JorneyData.JorneyState.moving);
         }
     }
 
-    public void changeState(JorneyData.State state)
+    public void changeState(JorneyData.JorneyState state)
     {
 
-        values.currentState = state;
+        values.CurrentState = state;
         values.save();
     }
 

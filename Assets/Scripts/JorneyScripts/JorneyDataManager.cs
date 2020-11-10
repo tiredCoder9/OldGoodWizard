@@ -7,14 +7,11 @@ using System.Linq;
 public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
 {
 
-
-
-
-    public GlobalContentLoader<JorneyData> contentLoader;
+    public ContentLoader<JorneyData> contentLoader;
 
     private JorneyDataManager()
     {
-        contentLoader = new GlobalContentLoader<JorneyData>();
+        contentLoader = new ContentLoader<JorneyData>();
     }
 
     public void LoadData()
@@ -50,7 +47,7 @@ public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
     public void addNewJorneyData(JorneyData _jorneyToAdd)
     {
         contentLoader.AddObject(_jorneyToAdd);
-        contentLoader.saveObject(_jorneyToAdd.testID);
+        contentLoader.saveObject(_jorneyToAdd.Id);
     }
 
 

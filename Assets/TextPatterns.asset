@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ae3e0a64234bd409c21e7ad29bea67, type: 3}
+  m_Name: TextPatterns
+  m_EditorClassIdentifier: 
+  textPatterns:
+  - {fileID: 11400000, guid: 19e77a5c7f4c2744b91f9f90c120cb6d, type: 2}
+  - {fileID: 11400000, guid: 863d082989a467d4a9ca42268b2cc3c1, type: 2}

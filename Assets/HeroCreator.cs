@@ -20,7 +20,7 @@ public class HeroCreator : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + "/" + typeof(Hero).Name + "s");
         }
 
-        JsonTool.save<Hero>(hero, hero.testID.get(), Application.persistentDataPath + "/" + typeof(Hero).Name + "s", new FileNameFormat("dt_", string.Empty, typeof(Hero).Name));
+        JsonTool.save<Hero>(hero, hero.Id.get(), Application.persistentDataPath + "/" + typeof(Hero).Name + "s", new FileNameFormat("dt_", string.Empty, typeof(Hero).Name));
 
 
     }

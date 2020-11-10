@@ -1,33 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class Timer
 {
-    //время начала события, поумолчанию равно текущему времени
-    [SerializeField]
-    protected long beginDate = GameManager._GLOBAL_TIME_;
-
-    //внутренее время события
-    [SerializeField]
-    protected long tempTime = 0;
-
-    //время последнего события в минутах
-    [SerializeField]
-    protected long lastTropeTime = 0;
-
-    //дополнительная задержка в минутах до следующего обновления jorney
-    [SerializeField]
-    protected long turnTimeDelay = 0;
+    
+    [JsonProperty] [SerializeField] protected long beginDate = GameManager._GLOBAL_TIME_;  //время начала события, поумолчанию равно текущему времени
+    [JsonProperty] [SerializeField] protected long tempTime = 0;                           //внутренее время события
+    [JsonProperty] [SerializeField] protected long lastTropeTime = 0;                      //время последнего события в минутах
+    [JsonProperty] [SerializeField] protected long turnTimeDelay = 0;                      //дополнительная задержка в минутах до следующего обновления jorney
 
 
     //реальное время с начала события
-    public long actualTime { get { return GameManager._GLOBAL_TIME_ - beginDate; } }
+    [JsonIgnore] public long actualTime { get { return GameManager._GLOBAL_TIME_ - beginDate; } }
+    [JsonIgnore] public long timeSinceLastTrope { get { return tempTime - lastTropeTime; } }
+    [JsonIgnore] public long innerTime { get { return tempTime;  } }
 
-    public long timeSinceLastTrope { get { return tempTime - lastTropeTime; } }
+    public Timer() { }
 
-    public long innerTime { get { return tempTime;  } }
+    [JsonConstructor]
+    public Timer(long beginDate, long tempTime, long lastTropeTime, long turnTimeDelay)
+    {
+        this.beginDate = beginDate;
+        this.tempTime = tempTime;
+        this.lastTropeTime = lastTropeTime;
+        this.turnTimeDelay = turnTimeDelay;
+    }
 
     /// <summary>
     /// Возвращает истину, в текущем кадре началась новая минута

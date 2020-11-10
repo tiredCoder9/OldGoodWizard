@@ -8,11 +8,10 @@ public class JorneyDataCreator : MonoBehaviour
     public JorneyData jorneyToCreate;
     public void create()
     {
-        JorneyData data = new JorneyData(jorneyToCreate.heroID);
-        
+        JorneyData data = new JorneyData(jorneyToCreate);
 
         FileNameFormat format = new FileNameFormat("dt_", string.Empty);
-        JsonTool.save<JorneyData>(data, data.testID.get(), Application.persistentDataPath + "/" + typeof(JorneyData).Name + "s", new FileNameFormat("dt_", string.Empty, "JorneyData"));
+        JsonTool.save<JorneyData>(data, data.Id.get(), Application.persistentDataPath + "/" + typeof(JorneyData).Name + "s", new FileNameFormat("dt_", string.Empty, "JorneyData"));
     }
 
 

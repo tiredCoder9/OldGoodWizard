@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b61796d6694608945888f02b03446ba8, type: 3}
   m_Name: AdventureModule
   m_EditorClassIdentifier: 
-  battleTropes:
-  - {fileID: 11400000, guid: 01f96bf71dcd3254e8b99b99a55eb3ff, type: 2}
-  - {fileID: 11400000, guid: 5a8a71074ebcf674e9fd87a748c8b681, type: 2}
-  - {fileID: 11400000, guid: c5df7c54eb6758b43914cf60aece3db0, type: 2}
-  - {fileID: 11400000, guid: 4594d997f2a06d048bf570add343fe11, type: 2}
-  - {fileID: 11400000, guid: e9112cc2516ec334bbbbfef606cb9444, type: 2}
-  - {fileID: 11400000, guid: 59e839dff2fa5574b9419265bd54407a, type: 2}
+  _id:
+    value: 1
+  enemies:
+  - {fileID: 11400000, guid: 1837a06b2a1501b4f9956cb436b70470, type: 2}
+  - {fileID: 11400000, guid: d5ccd28888b667c4db134f527ae4bbc6, type: 2}
+  - {fileID: 11400000, guid: 99904db34faa94c4e83b12e6b09b7a67, type: 2}
+  - {fileID: 11400000, guid: 3858ea9ad5beb944088b16e6c6a11e7a, type: 2}
+  - {fileID: 11400000, guid: 6e50a4fd76403004092b1f33493f8e9f, type: 2}
+  - {fileID: 11400000, guid: 520b664bd1a15264fa5e2a3f66a251c3, type: 2}
   specialTropes: []

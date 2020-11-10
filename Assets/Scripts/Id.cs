@@ -8,9 +8,7 @@ using System.Runtime.InteropServices;
 [System.Serializable]
 public struct Id 
 {
-    [SerializeField]
-    private string value;
-
+    [SerializeField][Newtonsoft.Json.JsonProperty] private string value;
     public Id ( string _value)
     {
         value = _value;

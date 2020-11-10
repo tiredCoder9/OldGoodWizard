@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class AdventureGenerator : MonoBehaviour
 {
-    public AdventureModule mainModule;
-
-    public Adventure tropes;
 
 
-    
 
-    public Trope getNextTrope(JorneyData jorney)
+    public TropeInstance getNextTrope(JorneyData jorney)
     {
         return generateBattleTrope(jorney);
     }
 
 
-    private Trope generateBattleTrope(JorneyData jorney)
+    private TropeInstance generateBattleTrope(JorneyData jorney)
     {
-        long targetID = mainModule.battleTropes[Random.Range(0, mainModule.battleTropes.Length)].id;
-        return TropeManager.getTropeById(targetID);
+        Enemy enemy = jorney.MainModule.enemies[Random.Range(0, jorney.MainModule.enemies.Length)].getClone();
+        AdventureTextPattern textEncounter = AdventureTextPatternStore.Instance.getRandomTextByType(AdventureTextPattern.DescriptionType.encounter);
+        AdventureTextPattern textEnding = AdventureTextPatternStore.Instance.getRandomTextByType(AdventureTextPattern.DescriptionType.ending);
+
+        BattleTropeData data = new BattleTropeData(enemy.Id, textEncounter.Id, textEnding.Id);
+        BattleTropeBehaviour behaviour = new BattleTropeBehaviour();
+
+        BattleTropeInstance battle = new BattleTropeInstance(behaviour, data, new Id(jorney.Hero.Id.get() + "trope"));
+
+        TropeDataManager.Instance.addObject(battle);
+
+        return battle;
     }
 
 

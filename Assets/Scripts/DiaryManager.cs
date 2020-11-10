@@ -12,7 +12,7 @@ public class DiaryManager : MonoBehaviour
     //добавляем новый элемент в дневник
     public static void adventureLog(JorneyData jorneyData, string message)
     {
-        jorneyData.diary.addElement(new DiaryItem(jorneyData.timer.innerTime, message));
+        jorneyData.Diary.addElement(new DiaryItem(jorneyData.Timer.innerTime, message));
         
         
     }
@@ -22,7 +22,7 @@ public class DiaryManager : MonoBehaviour
 
     public static void adventureLog(JorneyData jorney, DiaryDialog dialog)
     {
-        jorney.diary.addElement(dialog);
+        jorney.Diary.addElement(dialog);
     }
 
 
