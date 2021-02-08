@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a189c1602784d4b4d85936b726bb7fcb, type: 3}
+  m_Name: Rogue
+  m_EditorClassIdentifier: Assembly-CSharp::SkillsBlueprint
+  Power: 5
+  Endurance: 5
+  Sanity: 5
+  Speed: 5
+  Health: 500
+  Mind: 500
+  Luck: 5
+  Trade: 5
+  Speechcraft: 5
+  Wisdom: 5

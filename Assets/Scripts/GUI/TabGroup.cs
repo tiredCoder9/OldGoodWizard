@@ -11,6 +11,11 @@ public class TabGroup : MonoBehaviour
     public Sprite tabIdle;
     public Sprite tabSelected;
 
+    public void Start()
+    {
+        if (selected != null) OnTabSelected(selected);
+    }
+
     public void Subscribe(TabButton tab)
     {
         if (tabs == null)
@@ -26,10 +31,6 @@ public class TabGroup : MonoBehaviour
         if (selected != null) selected.Deselect();
 
         selected = tab;
-        selected.Select();
-
-        ResetTabs();
-        selected.background.sprite = tabSelected;
 
         int index = tab.transform.GetSiblingIndex();
 
@@ -44,6 +45,11 @@ public class TabGroup : MonoBehaviour
                 objectsToSwap[i].SetActive(false);
             }
         }
+
+        selected.Select();
+
+        ResetTabs();
+        selected.background.sprite = tabSelected;
     }
 
     public void OnTabExit(TabButton tab)

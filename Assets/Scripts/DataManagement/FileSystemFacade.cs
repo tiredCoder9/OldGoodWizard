@@ -24,7 +24,7 @@ public class FileSystemFacade
         }
         catch (FileNotFoundException e)
         {
-            Debug.LogError("DATA CONTROLLER: JSON save file not found. Load had been stopped ->" + fileName);
+            Debug.LogError("DATA CONTROLLER: JSON save file not found. Load was canceled ->" + fileName);
             return null;
         }
     }
@@ -73,7 +73,31 @@ public class FileSystemFacade
         {
             Debug.LogError(e.Message);
         }
-        
+    }
 
+
+    public static int countLinesNumber(string path, string filename)
+    {
+        var lineCount = 0;
+        using (var reader = File.OpenText(path+"/"+filename))
+        {
+            while (reader.ReadLine() != null)
+            {
+                lineCount++;
+            }
+        }
+
+        return lineCount;
+    }
+
+
+    public static string tryReadLine(string path, string filename, int line)
+    {
+        using (var sr = new StreamReader(path+"/"+filename))
+        {
+            for (int i = 1; i < line; i++)
+                sr.ReadLine();
+            return sr.ReadLine();
+        }
     }
 }

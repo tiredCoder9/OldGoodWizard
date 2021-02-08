@@ -13,8 +13,8 @@ public class DiaryManager : MonoBehaviour
     public static void adventureLog(JorneyData jorneyData, string message)
     {
         jorneyData.Diary.addElement(new DiaryItem(jorneyData.Timer.innerTime, message));
-        
-        
+
+        EventSystem.Instance.Raise(new Event_DiaryChanged(jorneyData.Id, jorneyData.Diary));
     }
 
     //TODO: может все-таки сделать текст в виде SO?

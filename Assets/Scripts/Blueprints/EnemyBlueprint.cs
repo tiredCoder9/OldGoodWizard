@@ -7,6 +7,11 @@ public class EnemyBlueprint : EntityBlueprint
 {
     public int Difficult { get { return (nativeHealth + nativePower) / 2; } }
 
+    public AdventureTextPattern encounterDescription;
+    public AdventureTextPattern endingDescription;
+
+    public ActorSkillsBlueprint skillsBlueprint;
+
     /// <summary>
     /// Возвращает копию существа с изначальными параметрами.
     /// </summary>

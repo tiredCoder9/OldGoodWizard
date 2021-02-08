@@ -17,16 +17,6 @@ public class BattleTropeInstance : TropeInstance
         this.id = id;
     }
 
-    public override void serialize()
-    {
-        data.serialize();
-    }
-
-    public override void deserialize()
-    {
-        data.deserialize();
-    }
-
     public override void begin(JorneyData jorney)
     {
         behaviour.begin(jorney, data);
@@ -37,8 +27,4 @@ public class BattleTropeInstance : TropeInstance
         return behaviour.ended(jorney, data);
     }
 
-    public BattleTropeData testGetData()
-    {
-        return data;
-    }
 }

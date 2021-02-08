@@ -13,7 +13,6 @@ public class EntityBlueprint : ScriptableObject, Identifyable
     public int NativePower {get{return nativePower; } }
     public int NativeHealth { get { return nativeHealth; } }
     public Id Id { get { return _id; } }
-
 }
 
 

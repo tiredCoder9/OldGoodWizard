@@ -32,7 +32,7 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
 
     public void addObject(TropeInstance trope)
     {
-        if (contentLoader.containsObjct(trope.Id))
+        if (contentLoader.containsObject(trope.Id))
         {
             contentLoader.updateObject(trope);
             contentLoader.saveObject(trope.Id);

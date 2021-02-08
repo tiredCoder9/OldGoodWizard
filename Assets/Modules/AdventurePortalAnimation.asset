@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b9d1f4a5955cb46833d25a52a94296, type: 3}
+  m_Name: AdventurePortalAnimation
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: -4030609352099511419, guid: cb7de7b1bdc807b4b91043f87291ec2b, type: 3}
+  - {fileID: -7008370346383436459, guid: cb7de7b1bdc807b4b91043f87291ec2b, type: 3}
+  - {fileID: -6728599053407725005, guid: cb7de7b1bdc807b4b91043f87291ec2b, type: 3}
+  - {fileID: 5999916318173995501, guid: cb7de7b1bdc807b4b91043f87291ec2b, type: 3}
+  duration: 0.04

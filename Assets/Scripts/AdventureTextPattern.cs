@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Newtonsoft.Json;
+
 [CreateAssetMenu][System.Serializable]
 public class AdventureTextPattern : ScriptableObject, Identifyable
 {
-    //TODO: переписать
-    [SerializeField] private Id _id;
-    public Id Id { get { return _id; } }
+    public enum DescriptionType { encounter, ending }
 
-    public enum DescriptionType { encounter, ending}
-    public DescriptionType type;
+    [JsonProperty] private Id _id;
 
+    [SerializeField] [JsonIgnore] private string text;
+    [JsonIgnore] public Id Id { get { return _id; } }
+    [JsonIgnore] public DescriptionType type;
+    [JsonIgnore] public string Text { get { return text; } }
 
-    [SerializeField][TextArea] private string text;
-
-    public string getText()
-    {
-        return text;
-    }
-    
 
 }

@@ -13,10 +13,10 @@ public class Diary
 
     [SerializeField] [JsonIgnore] public List<DiaryItem> Notes { get => notes; }
 
+    #region Constructors
     public Diary()
     {
         notes = new List<DiaryItem>();
-        lastElementIndex = 0;
     }
 
     [JsonConstructor]
@@ -26,6 +26,13 @@ public class Diary
         this.notes = notes;
         this.lastElementIndex = lastElementIndex;
     }
+
+    public Diary(int noteMaxCount)
+    {
+        this.noteMaxCount = noteMaxCount;
+        this.notes = new List<DiaryItem>();
+    }
+    #endregion
 
     public void addElement(DiaryItem noteDiary)
     {

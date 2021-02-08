@@ -50,6 +50,14 @@ public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
         contentLoader.saveObject(_jorneyToAdd.Id);
     }
 
+    public void deleteObject(Id id)
+    {
+        if (contentLoader.containsObject(id))
+        {
+            contentLoader.deleteObject(id);
+        }
+    }
+
 
 
 }

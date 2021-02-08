@@ -1,0 +1,173 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Newtonsoft.Json;
+using System.Linq;
+
+public class ActorSkills
+{
+
+    [JsonProperty] protected List<RawBonus> rawBonuses;
+    [JsonProperty] protected List<FinalBonus> finalBonuses;
+    [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes;
+    [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes;
+    
+
+    [JsonConstructor]
+    public ActorSkills(Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes, Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes, List<RawBonus> rawBonuses, List<FinalBonus> finalBonuses)
+    {
+
+        this.skillAttributes = skillAttributes;
+        this.resourceAttributes = resourceAttributes;
+        this.rawBonuses = rawBonuses;
+        this.finalBonuses = finalBonuses;
+    }
+
+    public ActorSkills(ActorSkills _actor)
+    {
+        this.skillAttributes = _actor.skillAttributes;
+        this.resourceAttributes = _actor.resourceAttributes;
+        this.rawBonuses = _actor.rawBonuses;
+        this.finalBonuses = _actor.finalBonuses;
+    }
+
+    public ActorSkills(List<SkillAttribute> _attributes, List<ResourceAttribute> _resources)
+    {
+        rawBonuses = new List<RawBonus>();
+        finalBonuses = new List<FinalBonus>();
+        skillAttributes = new Dictionary<BaseAttribute.AttributeType, SkillAttribute>();
+
+        foreach(var attr in _attributes)
+        {
+            Debug.Log(attr.type);
+            skillAttributes.Add(attr.type, attr);
+        }
+
+        resourceAttributes = new Dictionary<BaseAttribute.AttributeType, ResourceAttribute>();
+
+        foreach(var res in _resources)
+        {
+            resourceAttributes.Add(res.type, res);
+        }
+    }
+
+    //chars
+
+
+    public int GetSkillValue(BaseAttribute.AttributeType type)
+    {
+        if (skillAttributes.ContainsKey(type))
+            return skillAttributes[type].getFinalValue(this);
+        return 0;
+    }
+
+    public SkillAttribute GetSkillAttribute(BaseAttribute.AttributeType type)
+    {
+        if (skillAttributes.ContainsKey(type))
+            return skillAttributes[type];
+        return null;
+    }
+
+    public int GetResourceValue(BaseAttribute.AttributeType type)
+    {
+        if (resourceAttributes.ContainsKey(type))
+            return resourceAttributes[type].getCurrentValue(this);
+        return 0;
+    }
+
+    public ResourceAttribute GetResourceAttribute(BaseAttribute.AttributeType type)
+    {
+        if (resourceAttributes.ContainsKey(type))
+            return resourceAttributes[type];
+        return null;
+    }
+
+    public void AddToSkillValue(BaseAttribute.AttributeType type, int addition)
+    {
+        if (skillAttributes.ContainsKey(type)) skillAttributes[type].AddToBaseValue(addition);
+        RaiseCalculationFlags();
+    }
+       
+
+    public void AddSkill(BaseAttribute.AttributeType type, SkillAttribute attribute)
+    {
+        skillAttributes.Add(type, attribute);
+        RaiseCalculationFlags();
+    }
+
+    public void AddResource(BaseAttribute.AttributeType type, ResourceAttribute resource)
+    {
+        resourceAttributes.Add(type, resource);
+        RaiseCalculationFlags();
+    }
+
+
+    public void AddRawBonus(RawBonus bonus)
+    {
+        rawBonuses.Add(bonus);
+        RaiseCalculationFlags();
+    }
+
+    public void AddFinalBonus(FinalBonus bonus)
+    {
+        finalBonuses.Add(bonus);
+        RaiseCalculationFlags();
+    }
+
+    public void removeRawBonus(RawBonus bonus)
+    {
+      if(rawBonuses.Contains(bonus)) rawBonuses.Remove(bonus);
+        RaiseCalculationFlags();
+    }
+
+    public void removeFinalBonus(FinalBonus bonus)
+    {
+        if(finalBonuses.Contains(bonus))  finalBonuses.Remove(bonus);
+        RaiseCalculationFlags();
+    }
+
+    public List<RawBonus> getRawBonuses(BaseAttribute.AttributeType type)
+    {
+        return rawBonuses.Where(elem => elem.type == type).ToList();
+    }
+
+    public List<FinalBonus> getFinalBonuses(BaseAttribute.AttributeType type)
+    {
+        return finalBonuses.Where(elem => elem.type == type).ToList();
+    }
+
+
+    public void RaiseCalculationFlags()
+    {
+        foreach(var attribute in skillAttributes)
+        {
+            attribute.Value.setRecalcFlag(false);
+        }
+
+        foreach(var res in resourceAttributes)
+        {
+            res.Value.setRecalcFlag(false);
+        }
+    }
+
+
+    public void scatterSkillPoints_Random(int points)
+    {
+        while (points > 0)
+        {
+            foreach(var attr in skillAttributes)
+            {
+                if (points > 0)
+                {
+                    int increment = Random.Range(0, points+1);
+                    points -= increment;
+                    Debug.Log(points);
+                    attr.Value.AddToBaseValue(increment);
+                }
+            }
+        }
+    }
+
+
+
+}

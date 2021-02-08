@@ -12,12 +12,12 @@ public class ContentLoader<T> where T: Identifyable
     protected FileNameFormat fileFormat;
     protected string path;
     protected JsonSerializerSettings settings;
+    protected ulong idIncrement=1;
 
     public ContentLoader()
     {
         objects = new Dictionary<Id, T>();
         fileFormat = new FileNameFormat("dt_", string.Empty, typeof(T).Name);
-
         settings = new JsonSerializerSettings();
     }
 
@@ -41,7 +41,15 @@ public class ContentLoader<T> where T: Identifyable
             foreach (string serializedObj in serializedData)
             {
                 T instance = JsonConvert.DeserializeObject<T>(serializedObj, settings);
+                
                 objects.Add(instance.Id, instance);
+
+                ulong tempID=0;
+                if(ulong.TryParse(instance.Id.get(), out tempID))
+                {
+                    if (idIncrement < tempID) idIncrement = tempID;
+                }
+
             }
 
             IsInitialized = true;
@@ -51,6 +59,7 @@ public class ContentLoader<T> where T: Identifyable
         
     }
 
+    //TODO переписать и протестировать, этот метод не должен брать на себя ответственность проверки
     public virtual T getObject(Id id)
     {
         if(objects.ContainsKey(id)) return objects[id];
@@ -87,7 +96,7 @@ public class ContentLoader<T> where T: Identifyable
     }
 
 
-    public virtual bool containsObjct(Id id)
+    public virtual bool containsObject(Id id)
     {
         return objects.ContainsKey(id);
     }
@@ -99,6 +108,19 @@ public class ContentLoader<T> where T: Identifyable
             objects.Remove(id);
             FileSystemFacade.tryDeleteFile(path, fileFormat.formateName(id.get()));
         }
+    }
+
+    public virtual List<Id> getKeys()
+    {
+        return objects.Keys.ToList();
+    }
+
+
+
+    public virtual Id generateUniqueID()
+    {
+        ++idIncrement;
+        return new Id(idIncrement.ToString());
     }
 
 }

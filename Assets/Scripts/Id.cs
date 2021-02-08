@@ -6,12 +6,15 @@ using System.Runtime.InteropServices;
 //КОНТРАКТ: Id пустой строки будет соответствовать null
 
 [System.Serializable]
-public struct Id 
+public struct Id
 {
-    [SerializeField][Newtonsoft.Json.JsonProperty] private string value;
-    public Id ( string _value)
+
+    [SerializeField] [Newtonsoft.Json.JsonProperty] private string value;
+    [Newtonsoft.Json.JsonIgnore] public bool IsInitialized { get { return value != null && value != string.Empty; } }
+
+    public Id(string value)
     {
-        value = _value;
+        this.value = value;
     }
 
     public string get()
@@ -19,8 +22,16 @@ public struct Id
         return value;
     }
 
-    public void set(string _value)
+
+
+    public static bool operator ==(Id a, Id b){
+        return a.value == b.value;
+    }
+
+
+    public static bool operator !=(Id a, Id b)
     {
-        value = _value;
+        return a.value != b.value;
     }
 }
+

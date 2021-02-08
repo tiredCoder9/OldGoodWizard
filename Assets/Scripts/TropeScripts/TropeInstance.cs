@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 
 [System.Serializable]
 public class TropeInstance : Identifyable
@@ -16,14 +15,11 @@ public class TropeInstance : Identifyable
 
     public virtual void begin(JorneyData jorney) { }
     public virtual bool ended(JorneyData jorney) { return true; }
-    public virtual void serialize() { }
-    public virtual void deserialize() { }
 }
 [System.Serializable]
 public abstract class TropeData 
 {
-    public abstract void serialize();
-    public abstract void deserialize();
+
 }
 
 [System.Serializable]

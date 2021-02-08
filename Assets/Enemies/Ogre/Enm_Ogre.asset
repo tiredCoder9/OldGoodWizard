@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2454a764202a1245ba4cd839dd7a00a, type: 3}
+  m_Name: Enm_Ogre
+  m_EditorClassIdentifier: 
+  entityName: "\u0417\u043B\u043E\u0439 \u043E\u0433\u0440"
+  nativePower: 5
+  nativeHealth: 20
+  _id:
+    value: 5
+  encounterDescription: {fileID: 11400000, guid: f9b8a145f61569543a565bb888c77e99,
+    type: 2}
+  endingDescription: {fileID: 11400000, guid: c1bd8e047ac0a5c4f8a4b247cac91117, type: 2}
+  skillsBlueprint: {fileID: 11400000, guid: 731eccbdf883edd4c88301524346217a, type: 2}

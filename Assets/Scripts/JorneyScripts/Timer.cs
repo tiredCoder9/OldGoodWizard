@@ -29,12 +29,20 @@ public class Timer
         this.turnTimeDelay = turnTimeDelay;
     }
 
+    public Timer(long beginDate, long turnTimeDelay)
+    {
+        this.beginDate = beginDate;
+        this.turnTimeDelay = turnTimeDelay;
+    }
+
     /// <summary>
     /// Возвращает истину, в текущем кадре началась новая минута
     /// </summary>
     /// <returns></returns>
     public bool turnPassed()
     {
+        //Debug.Log("Check ->" + tempTime + " <? " + (actualTime + turnTimeDelay));
+        //Debug.Log(tempTime < actualTime + turnTimeDelay);
         return tempTime < actualTime + turnTimeDelay;
     }
 

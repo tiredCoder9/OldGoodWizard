@@ -1,0 +1,78 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PersistentControllersSystem : Singletone<PersistentControllersSystem>, IDataManager
+{
+    private ContentLoader<PersistentControllerData> contentLoader;
+    private FileNameFormat format;
+
+    [SerializeField] private List<PersistentController> persistentControllers;
+
+    private PersistentControllersSystem()
+    {
+        format = new FileNameFormat("sav_", string.Empty, "cdf");
+        contentLoader = new ContentLoader<PersistentControllerData>(format, new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
+    }
+
+    public void LoadData()
+    {
+        contentLoader.Initialize();
+        AssignControllers();
+    }
+
+
+    private void AssignControllers()
+    {
+        foreach(var controller in persistentControllers)
+        {
+            if (controller.GetControllerData() == null) continue;
+
+            var tempId = controller.GetControllerData().Id;
+            if (contentLoader.containsObject(tempId))
+            {
+                controller.SetControllerData(contentLoader.getObject(tempId));
+            }
+            else
+            {
+                controller.CreateControllerData();
+                contentLoader.AddObject(controller.GetControllerData());
+            }
+        }
+    }
+
+
+    public PersistentControllerData getObject(Id id)
+    {
+        if (contentLoader.containsObject(id))
+        {
+            return contentLoader.getObject(id);
+        }
+        return null;
+    }
+
+
+    public void saveObject(Id id)
+    {
+        if (contentLoader.containsObject(id))
+        {
+            contentLoader.saveObject(id);
+        }
+    }
+
+    public void deleteObject(Id id)
+    {
+        if (contentLoader.containsObject(id))
+        {
+            contentLoader.deleteObject(id);
+        }
+    }
+
+    public bool Constains(Id id)
+    {
+        return contentLoader.containsObject(id);
+    }
+
+
+
+}

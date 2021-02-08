@@ -6,7 +6,7 @@ using System;
 using Newtonsoft.Json;
 
 [System.Serializable]
-public class JorneyData : Identifyable 
+public class JorneyData : Identifyable, ISaveable
 {
     //этот обьект содержит только данные, аккумулируя в себе всю информацию конкретного путешествия
     [JsonProperty] [SerializeField] private Id _id;                          //идентификатор
@@ -26,12 +26,40 @@ public class JorneyData : Identifyable
     [JsonIgnore] public AdventureModule MainModule { get { return AdventureModuleStore.Instance.getObject(adventureModuleID); } }
     [JsonIgnore] public TropeInstance CurrentTrope { get { return TropeDataManager.Instance.getObject(currentTropeID); } } 
 
-    public enum JorneyState { moving, standingTrope }          //состояние путешествия - передвижение/происходит событие
+    public enum JorneyState { moving, standingTrope, endedFail, endedReturn}          //состояние путешествия - передвижение/происходит событие
     public enum MovingDirection { forward = 1, backward = -1 }    //направление движения вперед/назад
-    [JsonIgnore] public JorneyState CurrentState { get { return currentState; } set { currentState = value; } }
-    [JsonIgnore] public MovingDirection CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
+    [JsonIgnore] public JorneyState CurrentState
+    { get
+        {
+            return currentState;
+        }
+      set
+        {
+            JorneyState prevState = currentState;
+            currentState = value;
+            EventSystem.Instance.Raise(new Event_JorneyStateChanged(Id, prevState));
+        }
+    }
+    [JsonIgnore] public MovingDirection CurrentDirection
+    { get
+        {
+            return currentDirection;
+        }
+      set
+        {
+            MovingDirection prev = currentDirection;
+            currentDirection = value;
+            EventSystem.Instance.Raise(new Event_JorneyDirectionChanged(Id, prev));
+        }
+    }
 
-    [JsonIgnore] public float Distance { get { return distance; } set { distance = value; } }
+    [JsonIgnore] public float Distance { get { return distance; } set
+        {
+            distance = value;
+            if (distance < 0) distance = 0;
+            EventSystem.Instance.Raise(new Event_JorneyDistanceChanged(Id, Distance));
+        }
+    }
     [JsonIgnore] public int TropeChance { get { return tropeChance; } set { tropeChance = value; } }
     [JsonIgnore] public Timer Timer { get { return timer; } }
     [JsonIgnore] public List<Id> PassedTropesID { get { return passedTropesID; } }
@@ -98,11 +126,11 @@ public class JorneyData : Identifyable
 
     #endregion Constructors
 
-
     //сохранение в файловую систему
     public void save()
     {
-        HeroDataManager.Instance.saveHeroState(heroID);
+
+        Hero.save();
         TropeDataManager.Instance.saveObject(currentTropeID);
         JorneyDataManager.Instance.saveJorneyData(Id);
     }
@@ -112,5 +140,9 @@ public class JorneyData : Identifyable
         currentTropeID = trope.Id;
     }
 
+    public void delete()
+    {
+        JorneyDataManager.Instance.deleteObject(_id);
+    }
 
 }

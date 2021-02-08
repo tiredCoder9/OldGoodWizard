@@ -8,15 +8,19 @@ public class Jorney : MonoBehaviour
 
     [ReadOnly] public JorneyData values;
     public AdventureGenerator generator { get; set; }
+    public bool IsSynchronized;
 
     private void Start()
     {
 
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
         synchronizeJorney();
-
         values.save();
-        
+
+        IsSynchronized = true;
+
+        EventSystem.Instance.Raise(new Event_JorneyInitialized(values.Id, this));
+        EventSystem.Instance.AddEventListener<GUIEvent_ChangeJorneyDirection>(OnPlayerChangedDirection);
     }
 
     private void Update()
@@ -28,7 +32,6 @@ public class Jorney : MonoBehaviour
     //не сохраняет данные, используется когда происходит синхронизация времени 
     private void DynamicUpdate()
     {
-
         if (values.Hero.isAlive())
         {
             turnPath();
@@ -69,20 +72,23 @@ public class Jorney : MonoBehaviour
             case JorneyData.JorneyState.moving:
                 moving();
                 break;
-
             case JorneyData.JorneyState.standingTrope:
-                standingTrope();
+                tropeWaiting();
+                break;
+            case JorneyData.JorneyState.endedFail:
+                failedWaiting();
+                break;
+            case JorneyData.JorneyState.endedReturn:
+                returnedWaiting();
                 break;
         }
     }
 
-    public void moving()
+    private void moving()
     {
         //продолжаем путешествие, если начался новый ход 
         if (values.Timer.turnPassed())
         {
-            values.Distance += (int)values.CurrentDirection * 0.1f;
-
             switch (values.CurrentDirection)
             {
                 case JorneyData.MovingDirection.forward:
@@ -92,49 +98,107 @@ public class Jorney : MonoBehaviour
                     movingBackward();
                     break;
             }
+
         }
 
     }
 
-    public void movingForward()
+    private void movingForward()
     {
         if(Randomiser.withChance(values.TropeChance + values.Timer.timeSinceLastTrope * 0.01f))
         {
-            values.setCurrentTrope(generator.getNextTrope(values));
+            TropeInstance nextTrope = generator.getNextTrope(values);
+            values.setCurrentTrope(nextTrope);
             values.Timer.updateLastTropeTime();      
             values.CurrentTrope.begin(values);
-          
+            EventSystem.Instance.Raise(new Event_TropeStarted(nextTrope, values.Id));
             changeState(JorneyData.JorneyState.standingTrope);
-
             
+        }
+        else
+        {
+            //если не началось событие - продолжаем движение
+            values.Distance += (int)values.CurrentDirection * 0.1f;
         }
     }
 
-    public void movingBackward()
+    private void movingBackward()
     {
+        if (values.Distance > 0)
+        {
+            if (Randomiser.withChance(0.5f * values.TropeChance + values.Timer.timeSinceLastTrope * 0.01f))
+            {
+                TropeInstance nextTrope = generator.getNextTrope(values);
+                values.setCurrentTrope(nextTrope);
+                values.Timer.updateLastTropeTime();
+                values.CurrentTrope.begin(values);
+                EventSystem.Instance.Raise(new Event_TropeStarted(nextTrope, values.Id));
+                changeState(JorneyData.JorneyState.standingTrope);
+            }
+            else
+            {
+                //если не началось событие - продолжаем движение
+                values.Distance += (int)values.CurrentDirection * 0.1f;
+            }
+        }
+        else
+        {
+            changeState(JorneyData.JorneyState.endedReturn);
+            EventSystem.Instance.Raise(new Event_JorneyEnded(values.Id));
+        }
 
     }
 
-    public void standingTrope()
+    private void tropeWaiting()
     {
         if (values.CurrentTrope==null || values.CurrentTrope.ended(values))
         {
+            EventSystem.Instance.Raise(new Event_TropeEnded(values.CurrentTrope, values.Id));
+            if (!values.Hero.isAlive())
+            {
+                changeState(JorneyData.JorneyState.endedFail);
+                return;
+            }  
+            
             changeState(JorneyData.JorneyState.moving);
         }
     }
 
-    public void changeState(JorneyData.JorneyState state)
+    private void changeState(JorneyData.JorneyState state)
+    {
+       values.CurrentState = state;
+    }
+
+    private void changeDirection(JorneyData.MovingDirection direction)
+    {
+        values.CurrentDirection = direction;
+    }
+
+
+    private void OnPlayerChangedDirection(GUIEvent_ChangeJorneyDirection e)
     {
 
-        values.CurrentState = state;
+        if (values.CurrentState != JorneyData.JorneyState.standingTrope && 
+            values.CurrentState != JorneyData.JorneyState.endedReturn &&
+            values.CurrentState != JorneyData.JorneyState.endedFail &&
+            values.Hero.isAlive())
+        {
+            if (e.jorneyID == values.Id)
+            {
+                changeDirection(e.newDirection);
+            }
+        }
         values.save();
     }
 
 
-    public void writeInJournal(string text)
+    private void failedWaiting()
     {
-        print(text);
+        //ничего не делаем... пока что
     }
 
+    private void returnedWaiting()
+    {
 
+    }
 }

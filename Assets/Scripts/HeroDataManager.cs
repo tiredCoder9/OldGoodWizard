@@ -8,7 +8,7 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
 {
     private ContentLoader<Hero> contentLoader;
 
-    [ReadOnly] public List<Hero> loadedHeroes;
+    [ReadOnly][SerializeField] private List<Hero> loadedHeroes;
 
     private HeroDataManager()
     {
@@ -43,15 +43,33 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
     /// Add new hero object to system and try to save it in the files, it allows to save and load hero state in the future
     /// </summary>
     /// <returns></returns>
-    public void addNewHeroToData(Hero hero)
+    public void AddObject(Hero hero)
     {
         contentLoader.AddObject(hero);
-        contentLoader.saveObject(hero.Id);
     }
 
     public List<Hero> getObjects()
     {
         return contentLoader.getObjectsList();
+    }
+
+    public List<Hero> GetHeroesByState(Hero.HeroState _state)
+    {
+        return contentLoader.getObjectsList().FindAll(hero => hero.State == _state);
+    }
+
+
+    public Id generateGUID()
+    {
+        return contentLoader.generateUniqueID();
+    }
+
+    public void deleteObject(Id id)
+    {
+        if (contentLoader.containsObject(id))
+        {
+            contentLoader.deleteObject(id);
+        }
     }
 
 

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2b15f954f3bc9bc4e94999c834e3574e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - AlundraText
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3018975e5bf62b542ae2487a663bb1ca, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
