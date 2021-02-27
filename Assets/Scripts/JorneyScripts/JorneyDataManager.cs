@@ -9,9 +9,15 @@ public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
 
     public ContentLoader<JorneyData> contentLoader;
 
+
     private JorneyDataManager()
     {
         contentLoader = new ContentLoader<JorneyData>();
+    }
+
+    private void LateUpdate()
+    {
+        UpdateData();
     }
 
     public void LoadData()
@@ -19,22 +25,19 @@ public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
         contentLoader.Initialize();
     }
 
+    public void UpdateData()
+    {
+        if (contentLoader.hasDirties())
+        {
+            contentLoader.saveDirties();
+        }
+    }
+
     public List<JorneyData> GetJorneys()
     {
-       
         return contentLoader.getObjectsList();
     }
 
-    private void loadJorneyData(Id id)
-    {
-        //TODO: реализовать
-    }
-
-
-    public void saveJorneyData(Id jorneyID)
-    {
-        contentLoader.saveObject(jorneyID);
-    }
 
     public JorneyData getJorneyDataByID(Id id)
     {
@@ -47,7 +50,6 @@ public class JorneyDataManager : Singletone<JorneyDataManager>, IDataManager
     public void addNewJorneyData(JorneyData _jorneyToAdd)
     {
         contentLoader.AddObject(_jorneyToAdd);
-        contentLoader.saveObject(_jorneyToAdd.Id);
     }
 
     public void deleteObject(Id id)

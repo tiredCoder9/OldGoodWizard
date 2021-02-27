@@ -3,19 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public abstract class PersistentControllerData : Identifyable
+public abstract class PersistentControllerData : Identifyable, ISaveable
 {
     [JsonProperty] protected Id _id;
     [JsonIgnore] public Id Id { get { return _id ; } }
 
+    [JsonIgnore] private bool dirtyFlag = false;
 
-    public virtual void clear()
+    
+
+    public void delete()
     {
-        PersistentControllersSystem.Instance.deleteObject(_id);
+
     }
 
     public virtual void save()
     {
-        PersistentControllersSystem.Instance.saveObject(_id);
+        setDirty(true);
+    }
+
+    public bool getDirty()
+    {
+        return dirtyFlag;
+    }
+
+    public void setDirty(bool value)
+    {
+        dirtyFlag = value;
     }
 }

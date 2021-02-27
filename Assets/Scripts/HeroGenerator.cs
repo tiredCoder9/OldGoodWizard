@@ -18,8 +18,12 @@ public class HeroGenerator : MonoBehaviour
         string className = actorPattern.name;
         ActorSkills actor = actorPattern.getClone();
         actor.scatterSkillPoints_Random(Random.Range(10,5));
+
+        LevelBehavior levelBehavior = new LevelBehavior(1, 100);
+
         print("hey");
-        Hero randomHero = new Hero(name, className, actor, portrait);
+        Hero randomHero = new Hero(name, className, actor, levelBehavior, portrait);
+
         HeroDataManager.Instance.AddObject(randomHero);
         randomHero.save();
         return randomHero;

@@ -33,5 +33,10 @@ public struct Id
     {
         return a.value != b.value;
     }
+
+    public static Id empty
+    {
+        get { return new Id();  }
+    }
 }
 

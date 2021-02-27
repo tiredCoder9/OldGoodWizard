@@ -5,15 +5,29 @@ using Newtonsoft.Json;
 
 public class BaseAttribute 
 {
-    protected int baseValue;
-    protected int baseMultiplier;
+    public enum AttributeType { power, speed, endurance, sanity, luck, wisdom, speechcraft, trade, health, mind, placeholder }
+
+    [JsonProperty] protected int baseValue;
+    [JsonProperty] protected int baseMultiplier;
     [JsonProperty] protected bool IsRecalculated = false;
+    [JsonProperty] public AttributeType type = AttributeType.placeholder;
 
-    public int BaseValue { get => baseValue;}
-    public int BaseMultiplier { get => baseMultiplier;}
+    [JsonIgnore] public int BaseValue { get => baseValue;}
+    [JsonIgnore] public int BaseMultiplier { get => baseMultiplier;}
+    [JsonIgnore] public static Dictionary<BaseAttribute.AttributeType, string> attributeLNames = new Dictionary<AttributeType, string>()
+    {
+        { AttributeType.power, "Могущество" },
+        { AttributeType.endurance, "Выносливость"},
+        { AttributeType.sanity, "Здравомыслие"},
+        { AttributeType.speed, "Скорость"},
 
-    public enum AttributeType {power, speed,  endurance, sanity, luck, wisdom, speechcraft, trade, health, mind, placeholder}
-    public AttributeType type = AttributeType.placeholder;
+        { AttributeType.luck, "Удача"},
+        { AttributeType.trade, "Торговля"},
+        { AttributeType.speechcraft, "Красноречие"},
+        { AttributeType.wisdom, "Мудрость"},
+
+    };
+
 
     [JsonConstructor]
     public BaseAttribute(int baseValue, bool IsRecalculated, int baseMultiplier=0)

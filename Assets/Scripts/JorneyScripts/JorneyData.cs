@@ -21,6 +21,8 @@ public class JorneyData : Identifyable, ISaveable
     [JsonProperty] [SerializeField] private MovingDirection currentDirection = MovingDirection.forward;
     [JsonProperty] [SerializeField] private JorneyState currentState = JorneyState.moving;
 
+    [JsonIgnore] private bool dirtyFlag = false;
+
     [JsonIgnore] public Id Id { get { return _id; } }
     [JsonIgnore] public Hero Hero { get { return HeroDataManager.Instance.getHeroByID(heroID); } }
     [JsonIgnore] public AdventureModule MainModule { get { return AdventureModuleStore.Instance.getObject(adventureModuleID); } }
@@ -129,20 +131,31 @@ public class JorneyData : Identifyable, ISaveable
     //сохранение в файловую систему
     public void save()
     {
-
+        
         Hero.save();
-        TropeDataManager.Instance.saveObject(currentTropeID);
-        JorneyDataManager.Instance.saveJorneyData(Id);
+        if(CurrentTrope!=null) CurrentTrope.save();
+        this.setDirty(true);
     }
+    public void delete()
+    {
+        JorneyDataManager.Instance.deleteObject(_id);
+    }
+
+    public bool getDirty()
+    {
+        return dirtyFlag;
+    }
+
+    public void setDirty(bool value)
+    {
+        dirtyFlag = value;
+    }
+
+
 
     public void setCurrentTrope(TropeInstance trope)
     {
         currentTropeID = trope.Id;
-    }
-
-    public void delete()
-    {
-        JorneyDataManager.Instance.deleteObject(_id);
     }
 
 }

@@ -8,8 +8,8 @@ public class SkillAttribute : BaseAttribute
 
     [JsonProperty] protected int finalValue;
     [JsonProperty] protected int maxValue;
-    
 
+    [JsonIgnore] public int MaxValue { get { return maxValue; } }
 
 
 
@@ -30,33 +30,39 @@ public class SkillAttribute : BaseAttribute
     public void applyFinalBonuses(ActorSkills actorFeatures)
     {
         var finalBonuses = actorFeatures.getFinalBonuses(type);
-
-        int finalBonusValue=0;
-        int finalBonusMultiplier=0;
-        foreach(var bonus in finalBonuses)
+        if (finalBonuses.Count > 0)
         {
-            finalBonusValue += bonus.getFinalValue(actorFeatures);
-            finalBonusMultiplier += bonus.getFinalMultiplier(actorFeatures);
+            int finalBonusValue = 0;
+            int finalBonusMultiplier = 0;
+            foreach (var bonus in finalBonuses)
+            {
+                finalBonusValue += bonus.getFinalValue(actorFeatures);
+                finalBonusMultiplier += bonus.getFinalMultiplier(actorFeatures);
+            }
+
+            finalValue += finalBonusValue;
+            finalValue *= (finalBonusMultiplier + 1);
         }
 
-        finalValue += finalBonusValue;
-        finalValue *= (finalBonusMultiplier + 1);
     }
 
     public void applyRawBonuses(ActorSkills actorFeatures)
     {
         var rawBonuses = actorFeatures.getRawBonuses(type);
-
-        int rawBonusValue = 0;
-        int rawBonusMultiplier = 0;
-        foreach (var bonus in rawBonuses)
+        if (rawBonuses.Count > 0)
         {
-            rawBonusValue += bonus.getFinalValue(actorFeatures);
-            rawBonusMultiplier += bonus.getFinalMultiplier(actorFeatures);
+            int rawBonusValue = 0;
+            int rawBonusMultiplier = 0;
+            foreach (var bonus in rawBonuses)
+            {
+                rawBonusValue += bonus.getFinalValue(actorFeatures);
+                rawBonusMultiplier += bonus.getFinalMultiplier(actorFeatures);
+            }
+
+            finalValue += rawBonusValue;
+            finalValue *= (rawBonusMultiplier + 1);
         }
 
-        finalValue += rawBonusValue;
-        finalValue *= (rawBonusMultiplier + 1);
     }
 
     public virtual int calculateFinalValue(ActorSkills actorFeatures)
@@ -89,7 +95,10 @@ public class SkillAttribute : BaseAttribute
 
 
 
-
+    public string getLName()
+    {
+        return attributeLNames[this.type];
+    }
     
     
 

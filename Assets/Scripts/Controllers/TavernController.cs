@@ -17,8 +17,6 @@ public class TavernController : MonoBehaviour
 
     public void Start()
     {
-        print(lastTavernUpdateTime.getValue());
-        //print(lastTavernUpdateTime.getValue() + ChangeHeroesTimeDelay.Value);
 
         if (GameManager._GLOBAL_TIME_ > lastTavernUpdateTime.getValue() + ChangeHeroesTimeDelay.Value)
         {

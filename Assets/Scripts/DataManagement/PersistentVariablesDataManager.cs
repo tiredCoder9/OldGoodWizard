@@ -19,21 +19,28 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
     private string fullpath;
     private JsonSerializerSettings serializer;
 
+    private void LateUpdate()
+    {
+        UpdateData();
+    }
 
     public void LoadData()
     {
-        fullpath = Application.persistentDataPath + collection_path;
+        if (Directory.Exists(Application.persistentDataPath + collection_path)) Directory.CreateDirectory(Application.persistentDataPath + collection_path);
+        fullpath = Application.persistentDataPath + collection_path + variables_collection_filename;
         serializer = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         loadAll();
     }
 
-    private void LateUpdate()
+    public void UpdateData()
     {
         if (checkDirtyFlags())
         {
             saveAll();
         }
     }
+
+
 
     private bool checkDirtyFlags()
     {
@@ -51,9 +58,7 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
 
         variablesLookup = createVariablesLookup(persistentVariables);
 
-        if (!Directory.Exists(fullpath)) Directory.CreateDirectory(fullpath);
-
-        string serialized_collection = FileSystemFacade.tryReadSaveFromFile(variables_collection_filename, fullpath);
+        string serialized_collection = FileSystemFacade.tryReadSaveFromFile(fullpath);
 
         if (serialized_collection != null)
         {
@@ -67,7 +72,7 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
     {
 
 
-        if (!Directory.Exists(fullpath)) Directory.CreateDirectory(fullpath);
+        if (!Directory.Exists(Application.persistentDataPath + collection_path)) Directory.CreateDirectory(Application.persistentDataPath + collection_path);
 
         variablesData = new List<BasePersistentVariableData>();
         foreach (var variable in persistentVariables)
@@ -77,7 +82,7 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
         }
 
         string serializedData = JsonConvert.SerializeObject(variablesData, serializer);
-        FileSystemFacade.tryWriteSaveInFile(variables_collection_filename, fullpath, serializedData);
+        FileSystemFacade.tryWriteSaveInFile(fullpath, serializedData);
     }
 
 
@@ -121,5 +126,4 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
     }
 
 
- 
 }

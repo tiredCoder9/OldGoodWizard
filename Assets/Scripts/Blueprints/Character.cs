@@ -74,9 +74,6 @@ public abstract class Character : Entity, IActor
         return !ActorSkills.GetResourceAttribute(BaseAttribute.AttributeType.mind).IsExhausted();
     }
 
-    
-
-
 
 
 

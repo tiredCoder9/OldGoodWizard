@@ -118,7 +118,7 @@ public class Jorney : MonoBehaviour
         else
         {
             //если не началось событие - продолжаем движение
-            values.Distance += (int)values.CurrentDirection * 0.1f;
+            values.Distance += (int)values.CurrentDirection * 0.01f * values.Hero.Speed;
         }
     }
 
@@ -138,7 +138,7 @@ public class Jorney : MonoBehaviour
             else
             {
                 //если не началось событие - продолжаем движение
-                values.Distance += (int)values.CurrentDirection * 0.1f;
+                values.Distance += (int)values.CurrentDirection * 0.01f * values.Hero.Speed;
             }
         }
         else

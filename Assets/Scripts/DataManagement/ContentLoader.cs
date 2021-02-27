@@ -5,59 +5,123 @@ using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class ContentLoader<T> where T: Identifyable
+public class ContentLoader<T> where T: Identifyable, ISaveable
 {
     protected Dictionary<Id, T> objects;
     protected bool IsInitialized = false;
     protected FileNameFormat fileFormat;
     protected string path;
+    protected string fullpath;
     protected JsonSerializerSettings settings;
     protected ulong idIncrement=1;
+
+    protected Dictionary<string, string> cashedObjects;
+
+    protected bool globalDirtyFlag = false;
+
 
     public ContentLoader()
     {
         objects = new Dictionary<Id, T>();
         fileFormat = new FileNameFormat("dt_", string.Empty, typeof(T).Name);
         settings = new JsonSerializerSettings();
+        cashedObjects = new Dictionary<string, string>();
     }
 
     public ContentLoader(FileNameFormat _fileFormat, JsonSerializerSettings _settings)
     {
+        cashedObjects = new Dictionary<string, string>();
         objects = new Dictionary<Id, T>();
         fileFormat = _fileFormat;
 
         settings = _settings;
     }
 
-
     public virtual void Initialize()
     {
         if (!IsInitialized)
         {
-            path = Application.persistentDataPath + "/" + typeof(T).Name + "s";
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            string[] serializedData = FileSystemFacade.tryReadFilesByFormat(path, fileFormat);
-
-            foreach (string serializedObj in serializedData)
-            {
-                T instance = JsonConvert.DeserializeObject<T>(serializedObj, settings);
-                
-                objects.Add(instance.Id, instance);
-
-                ulong tempID=0;
-                if(ulong.TryParse(instance.Id.get(), out tempID))
-                {
-                    if (idIncrement < tempID) idIncrement = tempID;
-                }
-
-            }
-
-            IsInitialized = true;
-            Debug.Log("Content Loader of type: " + typeof(T).Name + " load " + objects.Count + " objects!");
-
+            loadObjects();
         }
         
     }
+
+
+    public void loadObjects()
+    {
+        path = Application.persistentDataPath;
+
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+        fullpath = path + "/" + typeof(T).Name + "Collection";
+
+        string serializedCollection = FileSystemFacade.tryReadSaveFromFile(fullpath);
+
+        if (serializedCollection != null)
+        {
+            cashedObjects = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedCollection, settings);
+
+            foreach (var cashObject in cashedObjects)
+            {
+                T instance = JsonConvert.DeserializeObject<T>(cashObject.Value, settings);
+
+                objects.Add(instance.Id, instance);
+
+                ulong tempID = 0;
+                if (ulong.TryParse(instance.Id.get(), out tempID))
+                {
+                    if (idIncrement < tempID) idIncrement = tempID;
+                }
+            }
+        }
+
+        Debug.Log("CONTENT LOADER: Objects of type "+ typeof(T).Name + " loaded - " + objects.Count);
+        
+    }
+
+
+
+    public void saveDirties()
+    {
+        foreach (var obj in objects)
+        {
+            if (obj.Value.getDirty())
+            {
+                reserializeObject(obj.Value);
+                obj.Value.setDirty(false);
+            }
+        }
+
+        string serializedCollection = JsonConvert.SerializeObject(cashedObjects, settings);
+
+        FileSystemFacade.tryWriteSaveInFile(fullpath, serializedCollection);
+    }
+
+    public bool hasDirties()
+    {
+        foreach(var obj in objects)
+        {
+            if (obj.Value.getDirty()) return true;
+        }
+
+        return globalDirtyFlag;
+    }
+
+
+
+
+    protected void reserializeObject(T obj)
+    {
+        if (cashedObjects.ContainsKey(obj.Id.get()))
+        {
+            string cashedObject = JsonConvert.SerializeObject(obj, settings);
+            cashedObjects[obj.Id.get()] = cashedObject;
+        }
+    }
+
+
+
+
 
     //TODO переписать и протестировать, этот метод не должен брать на себя ответственность проверки
     public virtual T getObject(Id id)
@@ -69,18 +133,16 @@ public class ContentLoader<T> where T: Identifyable
     public virtual void AddObject(T obj)
     {
         objects.Add(obj.Id ,obj);
+        AddObjectCash(obj);
+        obj.setDirty(true);
     }
 
-    public virtual void saveObject(Id id)
+    protected virtual void AddObjectCash(T obj)
     {
-        if (objects.ContainsKey(id))
-        {
-            string serializedObj = JsonConvert.SerializeObject(objects[id], settings);
-            string name = fileFormat.formateName(id.get());
-
-            FileSystemFacade.tryWriteSaveInFile(name, path, serializedObj);
-        }
+        string cashedObject = JsonConvert.SerializeObject(obj, settings);
+        cashedObjects.Add(obj.Id.get(), cashedObject);
     }
+
 
     public virtual List<T> getObjectsList()
     {
@@ -92,6 +154,8 @@ public class ContentLoader<T> where T: Identifyable
         if (objects.ContainsKey(obj.Id))
         {
             objects[obj.Id] = obj;
+            reserializeObject(obj);
+            obj.setDirty(true);
         }
     }
 
@@ -106,7 +170,8 @@ public class ContentLoader<T> where T: Identifyable
         if (objects.ContainsKey(id))
         {
             objects.Remove(id);
-            FileSystemFacade.tryDeleteFile(path, fileFormat.formateName(id.get()));
+            cashedObjects.Remove(id.get());
+            globalDirtyFlag = true;
         }
     }
 
@@ -122,5 +187,6 @@ public class ContentLoader<T> where T: Identifyable
         ++idIncrement;
         return new Id(idIncrement.ToString());
     }
+
 
 }

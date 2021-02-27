@@ -6,7 +6,8 @@ using Newtonsoft.Json;
 public class Enemy : Character
 {
     //вычислить общую силу существа
-    [JsonIgnore] public int Difficult { get { return (Power + Endurance) / 2; } }
+    [JsonIgnore] public int Difficult { get { return (MaxHealth*Power) / 2; } }
+    [JsonIgnore] public int rewardExperience { get { return (int)(Difficult * 0.1); } }
     [JsonIgnore] public AdventureTextPattern encounterDescription;
     [JsonIgnore] public AdventureTextPattern endingDescription;
     [JsonIgnore]public override ActorSkills ActorSkills { get { return actorSkills; } }

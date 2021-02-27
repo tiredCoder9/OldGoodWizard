@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HeroView : ViewElement<Hero>
+public class HeroView : ViewElement_Selectable<Hero>
 {
     public Image portrait;
     public Sprite defaultPortrait;
@@ -12,6 +12,7 @@ public class HeroView : ViewElement<Hero>
 
     public override void updateView(Hero data)
     {
+        id = data.Id;
         portrait.sprite = defaultPortrait;
         if (data.getPortrait() != null)
         {

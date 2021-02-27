@@ -11,7 +11,22 @@ public class ActorSkills
     [JsonProperty] protected List<FinalBonus> finalBonuses;
     [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes;
     [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes;
-    
+
+    [JsonIgnore] public List<SkillAttribute> SkillAttributes
+    {
+        get
+        {
+            return skillAttributes.Values.AsEnumerable().ToList();
+        }
+    }
+    [JsonIgnore] public List<ResourceAttribute> ResourceAttributes
+    {
+        get
+        {
+            return resourceAttributes.Values.AsEnumerable().ToList();
+        }
+    }
+
 
     [JsonConstructor]
     public ActorSkills(Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes, Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes, List<RawBonus> rawBonuses, List<FinalBonus> finalBonuses)
@@ -87,7 +102,13 @@ public class ActorSkills
         if (skillAttributes.ContainsKey(type)) skillAttributes[type].AddToBaseValue(addition);
         RaiseCalculationFlags();
     }
-       
+
+    public void AddToResourceValue(BaseAttribute.AttributeType type, int addition)
+    {
+        if (resourceAttributes.ContainsKey(type)) resourceAttributes[type].AddToBaseValue(addition);
+        RaiseCalculationFlags();
+    }
+
 
     public void AddSkill(BaseAttribute.AttributeType type, SkillAttribute attribute)
     {
@@ -161,12 +182,19 @@ public class ActorSkills
                 {
                     int increment = Random.Range(0, points+1);
                     points -= increment;
-                    Debug.Log(points);
                     attr.Value.AddToBaseValue(increment);
                 }
             }
         }
     }
+
+
+    public bool skillIsPumped(BaseAttribute.AttributeType type, int bonus=0)
+    {
+        return skillAttributes[type].BaseValue+bonus > skillAttributes[type].MaxValue;
+    }
+
+
 
 
 

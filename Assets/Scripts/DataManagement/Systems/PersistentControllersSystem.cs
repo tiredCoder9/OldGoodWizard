@@ -21,6 +21,14 @@ public class PersistentControllersSystem : Singletone<PersistentControllersSyste
         AssignControllers();
     }
 
+    public void UpdateData()
+    {
+        if (contentLoader.hasDirties())
+        {
+            contentLoader.saveDirties();
+        }
+    }
+
 
     private void AssignControllers()
     {
@@ -52,14 +60,6 @@ public class PersistentControllersSystem : Singletone<PersistentControllersSyste
     }
 
 
-    public void saveObject(Id id)
-    {
-        if (contentLoader.containsObject(id))
-        {
-            contentLoader.saveObject(id);
-        }
-    }
-
     public void deleteObject(Id id)
     {
         if (contentLoader.containsObject(id))
@@ -72,7 +72,6 @@ public class PersistentControllersSystem : Singletone<PersistentControllersSyste
     {
         return contentLoader.containsObject(id);
     }
-
 
 
 }

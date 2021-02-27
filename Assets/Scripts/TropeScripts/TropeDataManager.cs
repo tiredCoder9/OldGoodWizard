@@ -8,7 +8,12 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
 
     private FileNameFormat format;
     private ContentLoader<TropeInstance> contentLoader;
-    public List<TropeInstance> lists; 
+    public List<TropeInstance> lists;
+
+    private void LateUpdate()
+    {
+        UpdateData();
+    }
 
     public void LoadData()
     {
@@ -17,12 +22,13 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
         contentLoader.Initialize();
     }
 
-
-    public void saveObject(Id id)
+    public void UpdateData()
     {
-        contentLoader.saveObject(id);
+        if (contentLoader.hasDirties())
+        {
+            contentLoader.saveDirties();
+        }
     }
-
 
     public TropeInstance getObject(Id id)
     {
@@ -35,12 +41,10 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
         if (contentLoader.containsObject(trope.Id))
         {
             contentLoader.updateObject(trope);
-            contentLoader.saveObject(trope.Id);
         }
         else
         {
             contentLoader.AddObject(trope);
-            contentLoader.saveObject(trope.Id);
         }
 
     }
@@ -50,5 +54,5 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
         contentLoader.deleteObject(id);
     }
 
-    
+
 }

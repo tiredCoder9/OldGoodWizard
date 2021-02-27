@@ -15,22 +15,29 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
         contentLoader = new ContentLoader<Hero>();
     }
 
+    //!IMPORTANT
+
+    private void LateUpdate()
+    {
+        UpdateData();
+    }
+
+    public void UpdateData()
+    {
+        if (contentLoader.hasDirties())
+        {
+            contentLoader.saveDirties();
+        }
+    }
+
+
+
 
     public void LoadData()
     {
         contentLoader.Initialize();
 
         loadedHeroes = contentLoader.getObjectsList();
-    }
-
-    public void saveHeroState(Id _id)
-    {
-        contentLoader.saveObject(_id);
-    }
-     
-    public void loadHeroState(Id _id)
-    {
-        //TODO: реализовать
     }
 
 
@@ -66,10 +73,7 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
 
     public void deleteObject(Id id)
     {
-        if (contentLoader.containsObject(id))
-        {
-            contentLoader.deleteObject(id);
-        }
+        contentLoader.deleteObject(id);
     }
 
 

@@ -4,27 +4,32 @@ using UnityEngine;
 using System.IO;
 public class FileSystemFacade
 {
-    public static bool tryWriteSaveInFile(string fileName, string path,string saveText)
+    public static bool tryWriteSaveInFile(string path, string saveText)
     {
-        if (!File.Exists(path + "/" + fileName))
+        if (!File.Exists(path))
         {
-            Debug.LogWarning("DATA CONTROLLER: JSON save file not found. New save file created ->" + fileName);
+            Debug.LogWarning("DATA CONTROLLER: JSON save file not found. New save file created ->" + path);
         }
 
-        File.WriteAllText(path + "/" + fileName, saveText);
+        File.WriteAllText(path, saveText);
         return true;
     }
 
 
-    public static string tryReadSaveFromFile(string fileName, string path)
+    public static string tryReadSaveFromFile(string path)
     {
         try
         {
-            return File.ReadAllText(path + "/" + fileName);
+            return File.ReadAllText(path);
         }
         catch (FileNotFoundException e)
         {
-            Debug.LogError("DATA CONTROLLER: JSON save file not found. Load was canceled ->" + fileName);
+            Debug.LogWarning("DATA CONTROLLER: JSON save file not found. Load was canceled ->" + path);
+            return null;
+        }
+        catch(DirectoryNotFoundException e)
+        {
+            Debug.LogWarning("DATA CONTROLLER: JSON save file not found. Load was canceled ->" + path);
             return null;
         }
     }

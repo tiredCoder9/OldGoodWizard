@@ -22,8 +22,15 @@ public class BattleTropeBehaviour : TropeBehaviour
                 Debug.Log("Hero health: " + jorney.Hero.CurrentHealth + " Enemy health: " + values.enemy.CurrentHealth);
                 if (values.enemy.dealDamage(jorney.Hero.generateDamageValue()))
                 {
+                    
                     //пишем описание смерти в лог
                     DiaryManager.adventureLog(jorney, values.enemy.endingDescription.Text);
+
+                    jorney.Hero.LevelBehavior.addExperience(values.enemy.rewardExperience);
+                    DiaryManager.adventureLog(jorney, "Получено опыта: " + values.enemy.rewardExperience);
+
+                    
+                    
                     //даем знать, что событие окончено
                     return true;
 
