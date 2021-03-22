@@ -158,4 +158,9 @@ public class JorneyData : Identifyable, ISaveable
         currentTropeID = trope.Id;
     }
 
+    public void InitializeBehaviours()
+    {
+        Hero.InitializeBehaviours();
+    }
+
 }

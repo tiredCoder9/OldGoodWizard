@@ -12,10 +12,10 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
     [SerializeField] [JsonProperty] protected ActorSkills actorSkills;
     [SerializeField] [JsonProperty] protected string className;
     [SerializeField] [JsonProperty] protected LevelBehavior levelBehavior;
-
     [SerializeField] [JsonIgnore] private Sprite portrait;
     private bool dirtyFlag = false;
-    
+
+    [SerializeField] [JsonProperty] private ItemList heroEquipment;
 
     [JsonIgnore] public string ClassName { get { return className; } }
     [JsonIgnore] public HeroState State
@@ -114,5 +114,43 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
     public void setDirty(bool value)
     {
         dirtyFlag = value;
+    }
+
+    public void InitializeBehaviours()
+    {
+        var items = heroEquipment.getListRaw();
+        foreach(Item item in items)
+        {
+            if(item is IEquippable)
+            {
+                if( ((IEquippable)item).IsEquipped())
+                {
+                    EquipItem(item);
+                }
+            }
+        }
+    }
+
+    public void EquipItem(Item item)
+    {
+        if (!(item is IEquippable)) return;
+        ((IEquippable)item).Equip();
+        if (item is IBonusSource)
+        {
+            var bonusSource = item as IBonusSource;
+            switch (bonusSource.getBonusType())
+            {
+                case BonusSourceType.Item:
+
+                    if (bonusSource.getBonus().Type == BonusType.Final)
+                    {
+                        Debug.Log("bonus added");
+                        ActorSkills.AddFinalBonus(bonusSource.getBonus());
+                        
+                    }
+
+                break;
+            }
+        }
     }
 }

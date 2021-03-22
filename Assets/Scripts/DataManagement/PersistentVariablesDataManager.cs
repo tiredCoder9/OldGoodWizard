@@ -13,7 +13,7 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
 
 
     public string variables_collection_filename="varcollection.dat";
-    public string collection_path="/assets/";
+    public string collection_path="/vars/";
     public string[] serializedData;
 
     private string fullpath;
@@ -26,6 +26,7 @@ public class PersistentVariablesDataManager : Singletone<PersistentVariablesData
 
     public void LoadData()
     {
+        print(Application.persistentDataPath + collection_path);
         if (Directory.Exists(Application.persistentDataPath + collection_path)) Directory.CreateDirectory(Application.persistentDataPath + collection_path);
         fullpath = Application.persistentDataPath + collection_path + variables_collection_filename;
         serializer = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };

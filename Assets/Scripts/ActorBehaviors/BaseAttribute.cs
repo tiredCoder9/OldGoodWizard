@@ -7,8 +7,8 @@ public class BaseAttribute
 {
     public enum AttributeType { power, speed, endurance, sanity, luck, wisdom, speechcraft, trade, health, mind, placeholder }
 
-    [JsonProperty] protected int baseValue;
-    [JsonProperty] protected int baseMultiplier;
+    [SerializeField] [JsonProperty] protected int baseValue;
+    [SerializeField] [JsonProperty] protected int baseMultiplier=1;
     [JsonProperty] protected bool IsRecalculated = false;
     [JsonProperty] public AttributeType type = AttributeType.placeholder;
 

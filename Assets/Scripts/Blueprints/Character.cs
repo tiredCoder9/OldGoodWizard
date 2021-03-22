@@ -32,7 +32,7 @@ public abstract class Character : Entity, IActor
     {
         int power = Power;
 
-        int bottomEdge = (int)(power + (Luck*0.3));
+        int bottomEdge = (int)(power + (Luck * 0.3));
 
         int upperEdge = power * 2;
 

@@ -6,8 +6,11 @@ using Newtonsoft.Json;
 
 public class TestComponent : MonoBehaviour
 {
-    public Item item;
-    
+    public ItemList equipItems;
+
+    private ItemList deserializedList;
+
+    public EquippableItem equippableItem;
 
     // Start is called before the first frame update
     void Start()
@@ -20,5 +23,32 @@ public class TestComponent : MonoBehaviour
         MessageBox.Instance.DeployMessage(new GameMessage("Обучение", "Отправь своего первого героя в один из порталов, а затем вернись в игру позже, чтобы узнать что он повстречал."));
 
 
+
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            var serialized = JsonConvert.SerializeObject(equipItems);
+
+            var deserializedList = JsonConvert.DeserializeObject<ItemList>(serialized, new JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All }); 
+
+            foreach(var obj in deserializedList.getListRaw())
+            {
+                print(obj.name);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Hero hero = HeroDataManager.Instance.getObjects()[0];
+            print(hero.EntityName);
+            print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
+            
+           
+            hero.EquipItem(equippableItem);
+            print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
+        }
     }
 }

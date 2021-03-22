@@ -21,7 +21,6 @@ public class HeroGenerator : MonoBehaviour
 
         LevelBehavior levelBehavior = new LevelBehavior(1, 100);
 
-        print("hey");
         Hero randomHero = new Hero(name, className, actor, levelBehavior, portrait);
 
         HeroDataManager.Instance.AddObject(randomHero);

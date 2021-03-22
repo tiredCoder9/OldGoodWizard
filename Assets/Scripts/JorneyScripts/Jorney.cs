@@ -12,7 +12,9 @@ public class Jorney : MonoBehaviour
 
     private void Start()
     {
+        //инициализируем восстановление связей данных
 
+        values.InitializeBehaviours();
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
         synchronizeJorney();
         values.save();
@@ -21,6 +23,8 @@ public class Jorney : MonoBehaviour
 
         EventSystem.Instance.Raise(new Event_JorneyInitialized(values.Id, this));
         EventSystem.Instance.AddEventListener<GUIEvent_ChangeJorneyDirection>(OnPlayerChangedDirection);
+
+
     }
 
     private void Update()

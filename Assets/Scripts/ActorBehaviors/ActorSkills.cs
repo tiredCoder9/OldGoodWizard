@@ -7,8 +7,8 @@ using System.Linq;
 public class ActorSkills
 {
 
-    [JsonProperty] protected List<RawBonus> rawBonuses;
-    [JsonProperty] protected List<FinalBonus> finalBonuses;
+    [JsonIgnore] protected List<Bonus> rawBonuses;
+    [JsonIgnore] protected List<Bonus> finalBonuses;
     [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes;
     [JsonProperty] protected Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes;
 
@@ -29,13 +29,10 @@ public class ActorSkills
 
 
     [JsonConstructor]
-    public ActorSkills(Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes, Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes, List<RawBonus> rawBonuses, List<FinalBonus> finalBonuses)
+    public ActorSkills(Dictionary<BaseAttribute.AttributeType, SkillAttribute> skillAttributes, Dictionary<BaseAttribute.AttributeType, ResourceAttribute> resourceAttributes)
     {
-
         this.skillAttributes = skillAttributes;
         this.resourceAttributes = resourceAttributes;
-        this.rawBonuses = rawBonuses;
-        this.finalBonuses = finalBonuses;
     }
 
     public ActorSkills(ActorSkills _actor)
@@ -48,13 +45,13 @@ public class ActorSkills
 
     public ActorSkills(List<SkillAttribute> _attributes, List<ResourceAttribute> _resources)
     {
-        rawBonuses = new List<RawBonus>();
-        finalBonuses = new List<FinalBonus>();
+        rawBonuses = new List<Bonus>();
+        finalBonuses = new List<Bonus>();
         skillAttributes = new Dictionary<BaseAttribute.AttributeType, SkillAttribute>();
 
         foreach(var attr in _attributes)
         {
-            Debug.Log(attr.type);
+            //Debug.Log(attr.type);
             skillAttributes.Add(attr.type, attr);
         }
 
@@ -123,36 +120,36 @@ public class ActorSkills
     }
 
 
-    public void AddRawBonus(RawBonus bonus)
+    public void AddRawBonus(Bonus bonus)
     {
         rawBonuses.Add(bonus);
         RaiseCalculationFlags();
     }
 
-    public void AddFinalBonus(FinalBonus bonus)
+    public void AddFinalBonus(Bonus bonus)
     {
         finalBonuses.Add(bonus);
         RaiseCalculationFlags();
     }
 
-    public void removeRawBonus(RawBonus bonus)
+    public void removeRawBonus(Bonus bonus)
     {
       if(rawBonuses.Contains(bonus)) rawBonuses.Remove(bonus);
         RaiseCalculationFlags();
     }
 
-    public void removeFinalBonus(FinalBonus bonus)
+    public void removeFinalBonus(Bonus bonus)
     {
         if(finalBonuses.Contains(bonus))  finalBonuses.Remove(bonus);
         RaiseCalculationFlags();
     }
 
-    public List<RawBonus> getRawBonuses(BaseAttribute.AttributeType type)
+    public List<Bonus> getRawBonuses(BaseAttribute.AttributeType type)
     {
         return rawBonuses.Where(elem => elem.type == type).ToList();
     }
 
-    public List<FinalBonus> getFinalBonuses(BaseAttribute.AttributeType type)
+    public List<Bonus> getFinalBonuses(BaseAttribute.AttributeType type)
     {
         return finalBonuses.Where(elem => elem.type == type).ToList();
     }
@@ -193,9 +190,5 @@ public class ActorSkills
     {
         return skillAttributes[type].BaseValue+bonus > skillAttributes[type].MaxValue;
     }
-
-
-
-
 
 }
