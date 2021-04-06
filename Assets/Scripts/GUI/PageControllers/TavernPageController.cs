@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TavernPageController : ViewListGroup<Hero, TavernHeroView>, Page
+public class TavernPageController : SelectorBoxList<Hero, TavernHeroView>, Page
 {
-    public GameObject tavernHeroBoxObject;
-    public HeroBoxGroup tavernHeroBox;
-
-    public GameObject tavernHeroBoxPrefab;
-    public Transform boxTransformParent;
 
     private List<Hero> TavernHeroes;
 
@@ -16,7 +11,6 @@ public class TavernPageController : ViewListGroup<Hero, TavernHeroView>, Page
 
     public void Start()
     {
-        
         EventSystem.Instance.AddEventListener<GUIEvent_hireHero>(OnHeroWasHired);
     }
 
@@ -24,33 +18,25 @@ public class TavernPageController : ViewListGroup<Hero, TavernHeroView>, Page
 
     public void updatePage()
     {
-        if (tavernHeroBox == null) createBox();
         TavernHeroes = HeroDataManager.Instance.GetHeroesByState(Hero.HeroState.tavern);
         updateGroup(TavernHeroes);
     }
 
-    private void createBox()
-    {
-        tavernHeroBoxObject = Instantiate(tavernHeroBoxPrefab, boxTransformParent);
-        tavernHeroBox = tavernHeroBoxObject.GetComponent<HeroBoxGroup>();
-        tavernHeroBox.OnBoxClosed.AddListener(closeHeroBox);
-
-    }
 
     protected override void createView()
     {
         GameObject viewObject = Instantiate(viewPrefab, viewsParentTransform);
         var view = viewObject.GetComponent<TavernHeroView>();
         view.OnHireButtonClickEvent.AddListener(OnHireButtonClick);
-        view.OnClickEvent.AddListener(OnSelectClick);
+        view.OnClickEvent.AddListener(onViewClicked);
         views.Add(view);
     }
 
 
     private void OnHeroWasHired(GUIEvent_hireHero e)
     {
-        if(lastSelectedHero!=null && tavernHeroBox.IsOpen)
-        closeHeroBox(lastSelectedHero);
+        if (lastSelectedHero != null && currentBoxObject != null)
+            closeBox();
     }
 
     private void OnHireButtonClick(Id id)
@@ -72,32 +58,33 @@ public class TavernPageController : ViewListGroup<Hero, TavernHeroView>, Page
     public void hide()
     {
         EventSystem.Instance.RemoveEventListener<Event_HeroStateChanged>(OnHeroesStateChanged);
+        if (currentBoxObject != null) closeBox();
     }
 
-    private void OnSelectClick(Id _id)
+
+    protected override void openBox(Hero data)
     {
-        var selectedHero = TavernHeroes.Find(h => h.Id == _id);
+        lastSelectedHero = data;
+        base.openBox(data);
+    }
+
+
+    protected override void closeBox()
+    {
+        base.closeBox();
+        lastSelectedHero = null;
+    }
+
+
+    protected override void onViewClicked(Id id)
+    {
+        var selectedHero = TavernHeroes.Find(h => h.Id == id);
         if (selectedHero != null)
         {
             if (selectedHero.State == Hero.HeroState.tavern)
             {
-                OpenHeroBox(selectedHero);
+                openBox(selectedHero);
             }
         }
-    }
-
-    public void OpenHeroBox(Hero hero)
-    {
-        lastSelectedHero = hero;
-        tavernHeroBoxObject.SetActive(true);
-        tavernHeroBox.OnOpen(hero);
-    }
-
-    public void closeHeroBox(Hero lastHero)
-    {
-
-        tavernHeroBox.OnClose(lastHero);
-        tavernHeroBoxObject.SetActive(false);
-        lastSelectedHero = null;
     }
 }

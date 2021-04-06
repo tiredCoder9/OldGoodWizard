@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class ItemGrid : ViewListGroup<Item, ItemView>
+public class ItemGrid : ViewListGroup<Item, ItemViewStackable>
 {
     private ItemList itemList;
 
@@ -22,7 +22,7 @@ public class ItemGrid : ViewListGroup<Item, ItemView>
 
 
 
-    protected override void handleElement(Item data, ItemView viewElement)
+    protected override void handleElement(Item data, ItemViewStackable viewElement)
     {
         base.handleElement(data, viewElement);
         viewElement.setCount(itemList.getCount(data));

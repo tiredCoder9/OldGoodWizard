@@ -4,6 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 [CreateAssetMenu( fileName="Item", menuName="Items/BaseItem")]
+[System.Serializable]
 public class Item : ScriptableObject, Identifyable
 {
     [JsonProperty] [SerializeField] protected Id id;

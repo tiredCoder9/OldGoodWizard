@@ -7,6 +7,6 @@ public class JorneyBoxGroup : BoxGroup<JorneyData>
 {
     public void OnCloseButtonClick()
     {
-        OnBoxClosed.Invoke(lastData);
+        OnBoxClose.Invoke();
     }
 }

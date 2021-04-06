@@ -4,9 +4,31 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public abstract class BoxElement<D> :MonoBehaviour
+public abstract class BoxElement<D> : WindowBox
 {
-    
+    protected D lastData;
+
+    public override void OpenBox(object obj)
+    {
+        if(obj is D)
+        {
+            lastData = (D)obj;
+            OnOpen(lastData);
+            OnBoxOpened?.Invoke();
+        }
+       
+    }
+
+    public override void CloseBox()
+    {
+        if (lastData!=null)
+        {
+            OnClose(lastData);
+            OnBoxClosed?.Invoke();
+        }
+    }
+
+
     public abstract void OnOpen(D data);
     public abstract void OnClose(D data);
 
@@ -14,9 +36,9 @@ public abstract class BoxElement<D> :MonoBehaviour
 
 public class BoxGroup<T> : BoxElement<T>
 {
-    protected T lastData;
+    
     public bool IsOpen;
-    public UnityEvent<T> OnBoxClosed;
+    public UnityEvent OnBoxClose;
     [SerializeField] protected List<BoxElement<T>> boxElements;
     
 
@@ -42,6 +64,6 @@ public class BoxGroup<T> : BoxElement<T>
 
     private void OnDestroy()
     {
-        OnBoxClosed.RemoveAllListeners();
+        OnBoxClose.RemoveAllListeners();
     }
 }

@@ -11,7 +11,7 @@ public class Luck : SkillAttribute
     }
 
     [JsonConstructor]
-    public Luck(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, finalValue, IsRecalculated)
+    public Luck(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier,  IsRecalculated)
     {
         type = AttributeType.luck;
     }

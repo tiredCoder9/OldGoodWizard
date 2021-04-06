@@ -8,12 +8,12 @@ public class JorneyStartBoxGroup : BoxGroup<AdventureModule>
 {
     public void OnStartJorney()
     {
-        if(IsOpen) OnBoxClosed.Invoke(lastData);
+        if(IsOpen) OnBoxClose.Invoke();
     }
 
     public void OnCancelJorney()
     {
-        if (IsOpen) OnBoxClosed.Invoke(lastData);
+        if (IsOpen) OnBoxClose.Invoke();
     }
 
 }

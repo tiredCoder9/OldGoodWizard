@@ -12,7 +12,7 @@ public class Speechcraft : SkillAttribute
     }
 
     [JsonConstructor]
-    public Speechcraft(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, finalValue, IsRecalculated)
+    public Speechcraft(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, IsRecalculated)
     {
         type = AttributeType.speechcraft;
     }

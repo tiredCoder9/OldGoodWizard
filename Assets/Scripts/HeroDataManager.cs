@@ -12,7 +12,7 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
 
     private HeroDataManager()
     {
-        contentLoader = new ContentLoader<Hero>();
+        contentLoader = new ContentLoader<Hero>(new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
     }
 
     //!IMPORTANT
@@ -27,6 +27,7 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
         if (contentLoader.hasDirties())
         {
             contentLoader.saveDirties();
+            print("save!");
         }
     }
 
@@ -36,8 +37,17 @@ public class HeroDataManager : Singletone<HeroDataManager>, IDataManager
     public void LoadData()
     {
         contentLoader.Initialize();
-
         loadedHeroes = contentLoader.getObjectsList();
+
+        InitializeDataBehaviours(loadedHeroes);
+    }
+
+    private void InitializeDataBehaviours(List<Hero> heroes)
+    {
+        foreach(Hero hero in heroes)
+        {
+            hero.InitializeBehaviours();
+        }
     }
 
 

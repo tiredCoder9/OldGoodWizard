@@ -5,14 +5,12 @@ using UnityEngine;
 public class PersistentControllersSystem : Singletone<PersistentControllersSystem>, IDataManager
 {
     private ContentLoader<PersistentControllerData> contentLoader;
-    private FileNameFormat format;
 
     [SerializeField] private List<PersistentController> persistentControllers;
 
     private PersistentControllersSystem()
     {
-        format = new FileNameFormat("sav_", string.Empty, "cdf");
-        contentLoader = new ContentLoader<PersistentControllerData>(format, new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
+        contentLoader = new ContentLoader<PersistentControllerData>(new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
     }
 
     public void LoadData()

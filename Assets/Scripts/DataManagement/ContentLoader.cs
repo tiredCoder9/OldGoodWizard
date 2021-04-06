@@ -9,7 +9,6 @@ public class ContentLoader<T> where T: Identifyable, ISaveable
 {
     protected Dictionary<Id, T> objects;
     protected bool IsInitialized = false;
-    protected FileNameFormat fileFormat;
     protected string path;
     protected string fullpath;
     protected JsonSerializerSettings settings;
@@ -23,17 +22,14 @@ public class ContentLoader<T> where T: Identifyable, ISaveable
     public ContentLoader()
     {
         objects = new Dictionary<Id, T>();
-        fileFormat = new FileNameFormat("dt_", string.Empty, typeof(T).Name);
         settings = new JsonSerializerSettings();
         cashedObjects = new Dictionary<string, string>();
     }
 
-    public ContentLoader(FileNameFormat _fileFormat, JsonSerializerSettings _settings)
+    public ContentLoader(JsonSerializerSettings _settings)
     {
         cashedObjects = new Dictionary<string, string>();
         objects = new Dictionary<Id, T>();
-        fileFormat = _fileFormat;
-
         settings = _settings;
     }
 

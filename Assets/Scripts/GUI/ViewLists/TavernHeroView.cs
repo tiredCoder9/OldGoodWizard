@@ -44,6 +44,7 @@ public class TavernHeroView : ViewElement_Selectable<Hero>
 
     public void OnSelectClick()
     {
+        print("here");
         if (OnClickEvent != null)
             OnClickEvent.Invoke(id);
     }

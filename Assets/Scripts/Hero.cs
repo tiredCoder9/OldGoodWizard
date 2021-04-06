@@ -15,7 +15,7 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
     [SerializeField] [JsonIgnore] private Sprite portrait;
     private bool dirtyFlag = false;
 
-    [SerializeField] [JsonProperty] private ItemList heroEquipment;
+    [SerializeField] [JsonProperty] private EquipmentItemList equipment;
 
     [JsonIgnore] public string ClassName { get { return className; } }
     [JsonIgnore] public HeroState State
@@ -34,8 +34,7 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
     }
     [JsonIgnore] public override ActorSkills ActorSkills { get { return actorSkills; } }
     [JsonIgnore] public LevelBehavior LevelBehavior { get { return levelBehavior; } }
-
-    
+    [JsonIgnore] public EquipmentItemList Equipment { get => equipment; }
 
     public enum HeroState { tavern, tower, adventure, lost, dead}
 
@@ -45,7 +44,7 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
     
 
     [JsonConstructor]
-    public Hero(Id _id, string name, string portraitSpriteName, ActorSkills actorSkills, LevelBehavior levelBehavior, string className)
+    public Hero(Id _id, string name, string portraitSpriteName, ActorSkills actorSkills, LevelBehavior levelBehavior, string className, EquipmentItemList heroEquipment)
     {
         this._id = _id;
         this.entityName = name;
@@ -54,8 +53,10 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
         this.actorSkills=actorSkills;
         this.className = className;
         this.levelBehavior = levelBehavior;
+        this.equipment = heroEquipment;
     }
 
+    //hero create constructor
     public Hero(string _name, string className, ActorSkills actorSkills, LevelBehavior levelBehavior, Sprite _portrait)
     {
         _id = HeroDataManager.Instance.generateGUID();
@@ -65,6 +66,9 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
         this.actorSkills = actorSkills;
         this.className = className;
         this.levelBehavior = levelBehavior;
+
+        int equipSlotsCount = EquipmentItemList.checkEquipmentLimit(levelBehavior.CurrentLevel);
+        equipment = new EquipmentItemList(equipSlotsCount);
     }
 
 
@@ -118,14 +122,16 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
 
     public void InitializeBehaviours()
     {
-        var items = heroEquipment.getListRaw();
-        foreach(Item item in items)
+        var items = Equipment.getListRaw();
+        Debug.Log("Items ->");
+        foreach (Item item in items)
         {
+            Debug.Log(item.itemName);
             if(item is IEquippable)
             {
                 if( ((IEquippable)item).IsEquipped())
                 {
-                    EquipItem(item);
+                    AddItemBonus(item);
                 }
             }
         }
@@ -133,10 +139,23 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
 
     public void EquipItem(Item item)
     {
-        if (!(item is IEquippable)) return;
+        if(item is IEquippable)
+        {
+            Equipment.AddItem(item);
+            if(item is IBonusSource)
+            {
+                AddItemBonus(item);
+            }
+        }
+    }
+
+    private void AddItemBonus(Item item)
+    {
+        Debug.Log("equippable");
         ((IEquippable)item).Equip();
         if (item is IBonusSource)
         {
+            Debug.Log("bonusable");
             var bonusSource = item as IBonusSource;
             switch (bonusSource.getBonusType())
             {
@@ -144,11 +163,16 @@ public class Hero : Character, ISaveable, IAppraiseable, ITrainable
 
                     if (bonusSource.getBonus().Type == BonusType.Final)
                     {
-                        Debug.Log("bonus added");
+                        Debug.Log("final bonus added");
                         ActorSkills.AddFinalBonus(bonusSource.getBonus());
                         
                     }
-
+                    else if (bonusSource.getBonus().Type == BonusType.Raw)
+                    {
+                        Debug.Log("raw bonus added");
+                        ActorSkills.AddRawBonus(bonusSource.getBonus());
+                    }
+                    setDirty(true);
                 break;
             }
         }

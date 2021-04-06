@@ -8,7 +8,7 @@ public class HeroBoxGroup : BoxGroup<Hero>
 
     public void OnCloseButtonclick()
     {
-       if (lastData != null) OnBoxClosed.Invoke(lastData);
+       if (lastData != null) OnBoxClose.Invoke();
     }
 
 }

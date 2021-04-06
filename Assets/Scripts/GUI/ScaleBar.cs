@@ -17,7 +17,11 @@ public class ScaleBar : MonoBehaviour
 
     public void updateScale(long value, long max)
     {
-        float scale = (float)max / (float)value;
+        float scale = 0;
+        if (value > 0) 
+        {
+            scale = (float)max / (float)value;
+        }
 
         RectTransform full = fullScale.rectTransform;
         RectTransform current = currentScale.rectTransform;

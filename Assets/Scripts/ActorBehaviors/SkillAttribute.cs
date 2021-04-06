@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 public class SkillAttribute : BaseAttribute
 {
 
-    [JsonProperty] protected int finalValue;
+    [JsonIgnore] [JsonProperty] protected int finalValue;
     [JsonProperty] protected int maxValue;
 
     [JsonIgnore] public int MaxValue { get { return maxValue; } }
@@ -20,11 +20,10 @@ public class SkillAttribute : BaseAttribute
     }
 
     [JsonConstructor]
-    public SkillAttribute(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, IsRecalculated, baseMultiplier)
+    public SkillAttribute(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, IsRecalculated, baseMultiplier)
     {
+        finalValue = baseValue;
         this.maxValue = maxValue;
-        this.finalValue = finalValue;
-
     }
 
     public void applyFinalBonuses(ActorSkills actorFeatures)

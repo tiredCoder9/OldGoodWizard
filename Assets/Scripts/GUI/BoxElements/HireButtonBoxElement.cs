@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HireButtonBoxElement : BoxElement<Hero>
 {
-    private Hero lastData;
-
     public override void OnClose(Hero data)
     {
         

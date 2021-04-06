@@ -19,7 +19,7 @@ MonoBehaviour:
   itemDescription: Ancient hammer of forgotten dwarven warrior
   itemCategory: 2
   bonus:
-    baseValue: 10
+    baseValue: 1
     baseMultiplier: 1
     type: 0
     bonusType: 0

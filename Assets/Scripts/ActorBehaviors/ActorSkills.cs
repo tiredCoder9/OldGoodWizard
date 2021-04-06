@@ -33,6 +33,8 @@ public class ActorSkills
     {
         this.skillAttributes = skillAttributes;
         this.resourceAttributes = resourceAttributes;
+        rawBonuses = new List<Bonus>();
+        finalBonuses = new List<Bonus>();
     }
 
     public ActorSkills(ActorSkills _actor)

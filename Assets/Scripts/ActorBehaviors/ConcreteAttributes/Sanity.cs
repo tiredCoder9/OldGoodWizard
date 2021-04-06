@@ -11,7 +11,7 @@ public class Sanity : SkillAttribute
     }
 
     [JsonConstructor]
-    public Sanity(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, finalValue, IsRecalculated)
+    public Sanity(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, IsRecalculated)
     {
         type = AttributeType.sanity;
     }

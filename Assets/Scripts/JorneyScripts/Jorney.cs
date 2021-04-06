@@ -12,9 +12,8 @@ public class Jorney : MonoBehaviour
 
     private void Start()
     {
-        //инициализируем восстановление связей данных
 
-        values.InitializeBehaviours();
+
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
         synchronizeJorney();
         values.save();

@@ -9,28 +9,39 @@ public class ItemList
 {
     [JsonProperty] [SerializeField] protected List<Item> items;
 
-    public void AddItem(Item item)
+    public ItemList()
+    {
+        items = new List<Item>();
+    }
+
+    [JsonConstructor]
+    public ItemList(List<Item> items)
+    {
+        this.items = items;
+    }
+
+    public virtual void AddItem(Item item)
     {
         items.Add(item);
     }
 
-    public void RemoveItem(Item item)
+    public virtual void RemoveItem(Item item)
     {
         var foundedItem = items.Find(i => i.Id == item.Id);
         if (foundedItem != null) items.Remove(foundedItem);
     }
 
-    public List<Item> getListRaw()
+    public virtual List<Item> getListRaw()
     {
         return items;
     }
 
-    public bool IsContainsItem(Item item)
+    public virtual bool IsContainsItem(Item item)
     {
         return items.Any(i => i.Id == item.Id);
     }
 
-    public bool IsContainsItemList(ItemList list)
+    public virtual bool IsContainsItemList(ItemList list)
     {
         var contentList = list.getListRaw();
 
@@ -41,7 +52,7 @@ public class ItemList
         return true;
     }
 
-    public void AddList(ItemList list)
+    public virtual void AddList(ItemList list)
     {
         foreach(var i in list.getListRaw())
         {
@@ -49,12 +60,17 @@ public class ItemList
         }
     }
 
-    public int getCount(Item item)
+    public virtual int getCount(Item item)
     {
         return items.Count(i => i.Id == item.Id);
     }
 
-    public List<Item> getRawDistinct()
+    public virtual int getCount()
+    {
+        return items.Count;
+    }
+
+    public virtual List<Item> getRawDistinct()
     {
         List<Item> distinctList = new List<Item>();
         HashSet<Id> uniqLookup = new HashSet<Id>();
@@ -71,7 +87,7 @@ public class ItemList
         return distinctList;
     }
 
-    public List<Item> getRawDistinct(ItemCategory category)
+    public virtual List<Item> getRawDistinct(ItemCategory category)
     {
         List<Item> distinctList = new List<Item>();
         HashSet<Id> uniqLookup = new HashSet<Id>();

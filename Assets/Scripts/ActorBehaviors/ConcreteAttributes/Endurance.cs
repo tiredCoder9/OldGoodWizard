@@ -11,7 +11,7 @@ public class Endurance : SkillAttribute
     }
 
     [JsonConstructor]
-    public Endurance(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, finalValue, IsRecalculated)
+    public Endurance(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, IsRecalculated)
     {
         type = AttributeType.endurance;
     }

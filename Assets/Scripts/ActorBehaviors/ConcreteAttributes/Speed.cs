@@ -11,7 +11,7 @@ public class Speed : SkillAttribute
     }
 
     [JsonConstructor]
-    public Speed(int baseValue, int maxValue, int baseMultiplier, int finalValue, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier, finalValue, IsRecalculated)
+    public Speed(int baseValue, int maxValue, int baseMultiplier, bool IsRecalculated) : base(baseValue, maxValue, baseMultiplier,IsRecalculated)
     {
         type = AttributeType.speed;
     }

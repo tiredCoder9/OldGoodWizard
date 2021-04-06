@@ -6,7 +6,6 @@ using System.IO;
 public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
 {
 
-    private FileNameFormat format;
     private ContentLoader<TropeInstance> contentLoader;
     public List<TropeInstance> lists;
 
@@ -17,8 +16,7 @@ public class TropeDataManager : Singletone<TropeDataManager>, IDataManager
 
     public void LoadData()
     {
-        format = new FileNameFormat("dt_", string.Empty, "trope");
-        contentLoader = new ContentLoader<TropeInstance>(format, new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
+        contentLoader = new ContentLoader<TropeInstance>(new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });
         contentLoader.Initialize();
     }
 
