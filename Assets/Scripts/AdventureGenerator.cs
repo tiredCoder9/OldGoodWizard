@@ -15,9 +15,17 @@ public class AdventureGenerator : MonoBehaviour
 
     private TropeInstance generateBattleTrope(JorneyData jorney)
     {
-        Enemy enemy = jorney.MainModule.enemies[Random.Range(0, jorney.MainModule.enemies.Length)].getClone();
+     
+   
 
-        BattleTropeData data = new BattleTropeData(enemy.Id, enemy);
+
+        BattleEncounter battleEncounter = jorney.MainModule.encounters.getRandomElement();
+        List<Enemy> enemies = battleEncounter.GenerateEnemyEntities();
+        string startDescrp = battleEncounter.encounterDescription.GenerateText(enemies.ToArray(), jorney);
+        string endDesccrp = battleEncounter.endingDescription.GenerateText(enemies.ToArray(), jorney);
+
+
+        BattleTropeData data = new BattleTropeData(enemies, null, startDescrp, endDesccrp, false);
         BattleTropeBehaviour behaviour = new BattleTropeBehaviour();
 
         BattleTropeInstance battle = new BattleTropeInstance(behaviour, data, new Id(jorney.Hero.Id.get() + "trope"));

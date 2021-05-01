@@ -7,19 +7,35 @@ using Newtonsoft.Json;
 public class BattleTropeData : TropeData
 {
     //оригинальный обьект монстра, используется для клонирования
-    [JsonProperty] private Id refEnemyID;
-    [JsonProperty] public Enemy enemy;
+    [JsonProperty] public List<Enemy> enemies;
+    [JsonProperty] public Battle battle;
+    [JsonProperty] public bool isBattleEnded;
+    [JsonProperty] public double battleEndTime;
+    [JsonProperty] public BattleEndResult battleResult;
+    [JsonProperty] private string encounterDescription;
+    [JsonProperty] private string endingDescription;
 
-    [JsonIgnore] private EnemyBlueprint refEnemy { get { return EnemyStore.Instance.getObject(refEnemyID); } }
+    [JsonIgnore] public System.Action<BattleEndResult> OnBattleEnded;
+
+    public string EncounterDescription { get => encounterDescription; }
+    public string EndingDescription { get => endingDescription; }
 
     [JsonConstructor]
-    public BattleTropeData(Id refEnemyID, Enemy enemy)
+    public BattleTropeData(List<Enemy> enemy, Battle battle, string encounterDescription, string endingDescription,  bool isEnded)
     {
-        this.refEnemyID = refEnemyID;
-        this.enemy = enemy;
+        this.enemies = enemy;
+        this.battle = battle;
+        this.isEnded = isEnded;
+        this.encounterDescription = encounterDescription;
+        this.endingDescription = endingDescription;
     }
 
+    public List<Enemy> getEnemies()
+    {
+        return enemies;
+    }
 
+    
 
 }
 

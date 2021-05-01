@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class GameManager : MonoBehaviour
 {
 
+    public static DateTime baseDate = new DateTime(1970, 1, 1);
 
     //global game time in seconds
-    public static long _GLOBAL_TIME_
+    public static double _GLOBAL_TIME_
     {
         get
         {
@@ -29,9 +31,9 @@ public class GameManager : MonoBehaviour
 
 
 
-    public static long getDateInMinutes()
+    public static double getDateInMinutes()
     {
-        return System.DateTime.Now.Ticks / (60 * 10000000);
+        return DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000.0;
     }
 
     public void doStuff() { print("do stuff"); }

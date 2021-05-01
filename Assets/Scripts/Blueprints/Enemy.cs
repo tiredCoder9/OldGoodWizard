@@ -8,9 +8,9 @@ public class Enemy : Character
     //вычислить общую силу существа
     [JsonIgnore] public int Difficult { get { return (MaxHealth*Power) / 2; } }
     [JsonIgnore] public int rewardExperience { get { return (int)(Difficult * 0.1); } }
-    [JsonIgnore] public AdventureTextPattern encounterDescription;
-    [JsonIgnore] public AdventureTextPattern endingDescription;
-    [JsonIgnore]public override ActorSkills ActorSkills { get { return actorSkills; } }
+    [JsonIgnore] public override ActorSkills ActorSkills { get { return actorSkills; } }
+
+    [JsonIgnore] protected ItemList enemyLoot;
 
     [JsonProperty] protected ActorSkills actorSkills;
 
@@ -30,8 +30,7 @@ public class Enemy : Character
 
     public void restoreData(EnemyBlueprint blueprint)
     {
-        this.encounterDescription = blueprint.encounterDescription;
-        this.endingDescription = blueprint.endingDescription;
+        this.enemyLoot = blueprint.enemyLoot;
     }
 
 
@@ -40,8 +39,17 @@ public class Enemy : Character
     {
         this._id = blueprint.Id;
         this.entityName = blueprint.EntityName;
-        this.encounterDescription = blueprint.encounterDescription;
-        this.endingDescription = blueprint.endingDescription;
         this.actorSkills = blueprint.skillsBlueprint.getClone();
+        this.enemyLoot = blueprint.enemyLoot;
+    }
+
+    public ItemList GenerateLoot(int count)
+    {
+        ItemList loot = new ItemList();
+        for(int i=0; i<count; i++)
+        {
+            loot.AddItem(enemyLoot.getListRaw().getRandomElement());
+        }
+        return loot;
     }
 }

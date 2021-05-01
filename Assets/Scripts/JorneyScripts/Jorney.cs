@@ -13,6 +13,7 @@ public class Jorney : MonoBehaviour
     private void Start()
     {
 
+        values.InitializeBehaviours();
 
         //обновляем путешествие в зависимости от прошедшего времени, пока время не будет синхронизированно
         synchronizeJorney();
@@ -33,25 +34,31 @@ public class Jorney : MonoBehaviour
 
 
     //не сохраняет данные, используется когда происходит синхронизация времени 
-    private void DynamicUpdate()
+    private void UnsyncUpdate()
     {
         if (values.Hero.isAlive())
         {
             turnPath();
         }
-        values.Timer.jorneyTimeContinue();
     }
 
 
  
     private void DoUpdate()
     {
-        if (values.Hero.isAlive())
+        while (!values.Timer.TimeIsSync())
         {
+            values.Timer.Update();
             turnPath();
-            if(values.Timer.turnPassed()) values.save();
+            if (values.Timer.turnPassed()) 
+            {
+                values.Timer.updateLastStepTime();
+                values.save();
+            }
+
         }
-        values.Timer.jorneyTimeContinue();
+
+
     }
 
 
@@ -59,9 +66,15 @@ public class Jorney : MonoBehaviour
 
     private void synchronizeJorney()
     {
-        while (values.Timer.turnPassed())
+        while (!values.Timer.TimeIsSync())
         {
-            DynamicUpdate();
+            values.Timer.UnsyncUpdate();
+            UnsyncUpdate();
+
+            if (values.Timer.turnPassed())
+            {
+                values.Timer.updateLastStepTime();
+            }
         }
     }
 
@@ -87,6 +100,8 @@ public class Jorney : MonoBehaviour
         }
     }
 
+
+
     private void moving()
     {
         //продолжаем путешествие, если начался новый ход 
@@ -108,7 +123,7 @@ public class Jorney : MonoBehaviour
 
     private void movingForward()
     {
-        if(Randomiser.withChance(values.TropeChance + values.Timer.timeSinceLastTrope * 0.01f))
+        if(Randomiser.withChance(values.TropeChance + (float)values.Timer.timeSinceLastTrope * 0.01f))
         {
             TropeInstance nextTrope = generator.getNextTrope(values);
             values.setCurrentTrope(nextTrope);
@@ -129,7 +144,7 @@ public class Jorney : MonoBehaviour
     {
         if (values.Distance > 0)
         {
-            if (Randomiser.withChance(0.5f * values.TropeChance + values.Timer.timeSinceLastTrope * 0.01f))
+            if (Randomiser.withChance(0.5f * values.TropeChance + (float)values.Timer.timeSinceLastTrope * 0.01f))
             {
                 TropeInstance nextTrope = generator.getNextTrope(values);
                 values.setCurrentTrope(nextTrope);

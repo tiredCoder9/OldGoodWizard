@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System;
 
 public class TestComponent : MonoBehaviour
 {
@@ -28,27 +29,28 @@ public class TestComponent : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            var serialized = JsonConvert.SerializeObject(equipItems);
+        //if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    var serialized = JsonConvert.SerializeObject(equipItems);
 
-            var deserializedList = JsonConvert.DeserializeObject<ItemList>(serialized, new JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All }); 
+        //    var deserializedList = JsonConvert.DeserializeObject<ItemList>(serialized, new JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All }); 
 
-            foreach(var obj in deserializedList.getListRaw())
-            {
-                print(obj.name);
-            }
-        }
+        //    foreach(var obj in deserializedList.getListRaw())
+        //    {
+        //        print(obj.name);
+        //    }
+        //}
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Hero hero = HeroDataManager.Instance.getObjects()[0];
-            print(hero.EntityName);
-            print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
-            
-           
-            hero.EquipItem(equippableItem);
-            print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
-        }
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    Hero hero = HeroDataManager.Instance.getObjects()[0];
+        //    print(hero.EntityName);
+        //    print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
+
+
+        //    hero.EquipItem(equippableItem);
+        //    print(hero.ActorSkills.GetSkillValue(BaseAttribute.AttributeType.power));
+        //}
+
     }
 }

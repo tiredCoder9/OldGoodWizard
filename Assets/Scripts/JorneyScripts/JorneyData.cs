@@ -20,6 +20,7 @@ public class JorneyData : Identifyable, ISaveable
     [JsonProperty] [SerializeField] private Diary diary;                     //лог текстовых сообщений событий
     [JsonProperty] [SerializeField] private MovingDirection currentDirection = MovingDirection.forward;
     [JsonProperty] [SerializeField] private JorneyState currentState = JorneyState.moving;
+    [JsonProperty] [SerializeField] private ItemList inventory;
 
     [JsonIgnore] private bool dirtyFlag = false;
 
@@ -67,6 +68,14 @@ public class JorneyData : Identifyable, ISaveable
     [JsonIgnore] public List<Id> PassedTropesID { get { return passedTropesID; } }
     [JsonIgnore] public Diary Diary { get { return diary; } }
 
+    [JsonIgnore] public ItemList Inventory
+    {
+        get
+        {
+            return inventory;
+        }
+    }
+
     //Не открывай, убьет
     #region Constructors
     public JorneyData(JorneyData _jorney)
@@ -108,6 +117,7 @@ public class JorneyData : Identifyable, ISaveable
         timer = _timer;
         passedTropesID = new List<Id>();
         _id = new Id("jorney" + _heroID.get());
+        inventory = new ItemList();
     }
 
     [JsonConstructor] //Используется для десериализации данных путешествия
@@ -161,6 +171,18 @@ public class JorneyData : Identifyable, ISaveable
     public void InitializeBehaviours()
     {
         Hero.InitializeBehaviours();
+
+        if (CurrentTrope != null && !CurrentTrope.IsEnded) CurrentTrope?.InitializeBehaviours(this);
+    }
+
+    public void AddLoot(Item item)
+    {
+        inventory.AddItem(item);
+    }
+
+    public void AddLoot(ItemList list)
+    {
+        inventory.AddList(list);
     }
 
 }

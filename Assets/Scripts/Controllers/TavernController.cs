@@ -7,11 +7,11 @@ public class TavernController : MonoBehaviour
     public HeroGenerator generator;
 
     [Header("Constants")]
-    public ConstantLong ChangeHeroesTimeDelay;
+    public ConstantDouble ChangeHeroesTimeDelay;
     public ConstantInteger MaxHeroesSetCount;
 
     [Header("Persistent Data")]
-    public PersistentVariableLong lastTavernUpdateTime;
+    public PersistentVariableDouble lastTavernUpdateTime;
     public PlayerMoney money;
 
 

@@ -12,6 +12,7 @@ public abstract class ViewElement_Selectable<D> : ViewElement<D>, IPointerClickH
     public void OnPointerClick(PointerEventData eventData)
     {
         print(eventData.pointerClick.name);
-        if(id.IsInitialized) OnClickEvent.Invoke(id);
+        if (id.IsInitialized) OnClickEvent.Invoke(id);
     }
+
 }

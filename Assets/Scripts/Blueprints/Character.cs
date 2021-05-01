@@ -28,6 +28,10 @@ public abstract class Character : Entity, IActor
     [JsonIgnore] public virtual int CurrentMind { get { return ActorSkills.GetResourceValue(BaseAttribute.AttributeType.mind); } }
     [JsonIgnore] public virtual int CurrentHealth { get { return ActorSkills.GetResourceValue(BaseAttribute.AttributeType.health); } }
 
+    public event System.Action<int> OnHealthChanged;
+    public event System.Action<int> OnDealedHealthDamage;
+    public event System.Action<Character, Character> OnAttack;
+
     public int generateDamageValue()
     {
         int power = Power;
@@ -47,6 +51,8 @@ public abstract class Character : Entity, IActor
         {
             Debug.Log("damage dealed - "+damage);
             health.addToCurrentValue(-damage);
+            OnHealthChanged?.Invoke(CurrentHealth);
+            OnDealedHealthDamage?.Invoke(damage);
             return health.IsExhausted();
         }
         return false;
@@ -74,7 +80,12 @@ public abstract class Character : Entity, IActor
         return !ActorSkills.GetResourceAttribute(BaseAttribute.AttributeType.mind).IsExhausted();
     }
 
-
+    public void Attack(Character characterTarget)
+    {
+        this.OnAttack?.Invoke(this, characterTarget);
+        int damage = this.generateDamageValue();
+        characterTarget.dealDamage(damage);
+    }
 
 
 }

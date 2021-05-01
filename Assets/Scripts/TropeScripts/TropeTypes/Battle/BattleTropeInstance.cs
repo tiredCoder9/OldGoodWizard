@@ -27,4 +27,17 @@ public class BattleTropeInstance : TropeInstance
         return behaviour.ended(jorney, data);
     }
 
+    public override bool IsEnded => data.IsEnded;
+
+    public override void InitializeBehaviours(JorneyData jorney)
+    {
+        List<Character> list = new List<Character>();
+        list.AddRange(data.enemies);
+        data.battle.SetValues(jorney.Hero, list);
+    }
+
+    public BattleTropeData getData()
+    {
+        return data;
+    }
 }

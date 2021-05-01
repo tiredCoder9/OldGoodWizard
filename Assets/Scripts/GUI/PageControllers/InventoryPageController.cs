@@ -14,13 +14,21 @@ public class InventoryPageController : MonoBehaviour, Page
     [SerializeField] private Sprite activeBg;
     [SerializeField] private Sprite inctiveBg;
 
+    private bool IsStartSeleted;
+
     public void hide()
     {
         
     }
 
     public void show()
-    {
+    {   
+        if (!IsStartSeleted)
+        {
+            IsStartSeleted = true;
+            tabs[0].Select();
+            return;
+        }
         grid.UpdateGrid(inventory.getValue(), category);
     }
 

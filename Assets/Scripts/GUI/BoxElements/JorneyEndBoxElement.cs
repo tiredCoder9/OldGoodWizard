@@ -6,9 +6,16 @@ using TMPro;
 
 public class JorneyEndBoxElement : BoxElement<JorneyData>
 {
-    public TextMeshProUGUI jorneyResultHeading;
 
     private JorneyData jorneyData;
+
+    [SerializeField]
+    private GameObject jorneyEndFailedPrefab;
+    [SerializeField]
+    private GameObject jorneyEndReturnPrefab;
+
+
+    private GameObject currentEndPanel;
 
     public override void OnOpen(JorneyData data)
     {
@@ -22,20 +29,22 @@ public class JorneyEndBoxElement : BoxElement<JorneyData>
     {
         gameObject.SetActive(false);
         EventSystem.Instance.RemoveEventListener<Event_JorneyStateChanged>(OnJorneyStateChanged);
-        
+        if (currentEndPanel != null) Destroy(currentEndPanel);
     }
 
 
     public void updateElement(JorneyData data)
     {
+        print(data.CurrentState);
         switch (data.CurrentState)
         {
-            case JorneyData.JorneyState.endedReturn:
-                createReturnedPanel(data);
+            case JorneyData.JorneyState.endedReturn:   
                 gameObject.SetActive(true);
+                createReturnedPanel(data);
                 break;
 
             case JorneyData.JorneyState.endedFail:
+                gameObject.SetActive(true);
                 createFailedPanel(data);
                 break;
         }
@@ -46,15 +55,22 @@ public class JorneyEndBoxElement : BoxElement<JorneyData>
     {
         if (data.CurrentState == JorneyData.JorneyState.endedFail)
         {
-            jorneyResultHeading.text = data.Hero.EntityName + " погиб в странствии!";
+            currentEndPanel = Instantiate(jorneyEndFailedPrefab, transform);
+            var resultView = currentEndPanel.GetComponent<JorneyResultView>();
+            resultView.SetValue(data);
+            resultView.OnClick += JorneyFinishButtonClick;
         }
     }
 
     public void createReturnedPanel(JorneyData data)
     {
+        if (currentEndPanel != null) Destroy(currentEndPanel);
         if (data.CurrentState == JorneyData.JorneyState.endedReturn)
         {
-            jorneyResultHeading.text = data.Hero.EntityName + " вернулся обратно в башню!";
+            currentEndPanel = Instantiate(jorneyEndReturnPrefab, transform);
+            var resultView = currentEndPanel.GetComponent<JorneyResultView>();
+            resultView.SetValue(data);
+            resultView.OnClick += JorneyFinishButtonClick;
         }
     }
 
@@ -68,7 +84,7 @@ public class JorneyEndBoxElement : BoxElement<JorneyData>
     }
 
 
-    public void OnJorneyFinishButtonClick()
+    public void JorneyFinishButtonClick()
     {
         if(jorneyData!=null && jorneyData.CurrentState!=JorneyData.JorneyState.moving && jorneyData.CurrentState != JorneyData.JorneyState.standingTrope)
         {

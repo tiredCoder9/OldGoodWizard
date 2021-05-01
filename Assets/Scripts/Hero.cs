@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 
 [System.Serializable]
-public class Hero : Character, ISaveable, IAppraiseable, ITrainable
+public class Hero : Character, ISaveable, IAppraiseable, ITrainable, IPortraitable
 {
     [SerializeField] [JsonProperty] private string portraitSpriteName;
     [SerializeField] [JsonProperty] private HeroState state = HeroState.tavern;

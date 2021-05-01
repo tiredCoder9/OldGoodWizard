@@ -18,6 +18,9 @@ public class JorneysController : MonoBehaviour
     public ConstantInteger diaryMaxCount;
     public ConstantInteger jorneyStepDelay;
 
+    [SerializeField]
+    private PlayerInventoryList inventory;
+
     private void Awake()
     {
         initializedJorneysLookup = new List<JorneyData>();
@@ -58,9 +61,7 @@ public class JorneysController : MonoBehaviour
         _jorneyComponent.values = jorney;
 
         jorneysObjects.Add(_jorneyPatternObject);
-        initializedJorneysLookup.Add(jorney);
-
-        
+        initializedJorneysLookup.Add(jorney);    
     }
 
 
@@ -84,7 +85,9 @@ public class JorneysController : MonoBehaviour
             jorney.Hero.State = Hero.HeroState.tower;
         }
 
+
         //...здесь будет обработка инвентаря
+        if (jorney.CurrentState == JorneyData.JorneyState.endedReturn) inventory.getValue().AddList(jorney.Inventory);
 
         jorney.Hero.save();
         TropeDataManager.Instance.deleteObject(jorney.CurrentTrope.Id);

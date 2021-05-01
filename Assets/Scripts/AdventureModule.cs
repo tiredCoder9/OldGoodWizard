@@ -12,6 +12,8 @@ public class AdventureModule : ScriptableObject, Identifyable
     public string Name;
     [TextArea] public string Description;
 
-    public EnemyBlueprint[] enemies;
+    public BattleEncounter[] encounters;
     public SpecialTrope[] specialTropes;
+
+
 }

@@ -4,12 +4,12 @@ using UnityEditor;
 public class DiaryItem
 {
     [ReadOnly]
-    public long time;
+    public double time;
 
     [ReadOnly]
     public string text;
 
-    public DiaryItem(long _time=0, string _text="PLACEHOLDER")
+    public DiaryItem(double _time=0, string _text="PLACEHOLDER")
     {
         time = _time;
         text = _text;
@@ -20,7 +20,7 @@ public class DiaryItem
         return text;
     }
 
-    public long getTime()
+    public double getTime()
     {
         return time;
     }

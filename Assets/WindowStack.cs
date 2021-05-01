@@ -32,12 +32,22 @@ public class WindowStack : Singletone<WindowStack>
 
         box.transform.SetParent(boxParent);
         box.transform.SetAsLastSibling();
-        box.GetComponent<RectTransform>().anchorMax = Vector3.one;
-        box.GetComponent<RectTransform>().anchorMin = Vector3.zero;
+
         windowBoxes.Push(box);
         box.gameObject.SetActive(true);
         box.transform.localScale = Vector3.one;
         box.transform.localPosition = Vector3.zero;
+
+        var boxrect = box.GetComponent<RectTransform>();
+
+        boxrect.anchorMax = Vector3.one;
+        boxrect.anchorMin = Vector3.zero;
+
+        boxrect.offsetMin = Vector2.zero;
+        boxrect.offsetMax = Vector2.zero;
+
+
+
         box.OpenBox(data);
     }
 

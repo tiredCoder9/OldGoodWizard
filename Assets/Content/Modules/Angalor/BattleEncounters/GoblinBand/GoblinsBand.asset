@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6810f708dadefe14197d257e0f4b38b9, type: 3}
+  m_Name: GoblinsBand
+  m_EditorClassIdentifier: 
+  MaxEnemiesCount: 1
+  MinEnemiesCount: 3
+  capableEnemies:
+  - {fileID: 11400000, guid: 9482fd084050b184eba1e57e0a83848d, type: 2}
+  - {fileID: 11400000, guid: 99904db34faa94c4e83b12e6b09b7a67, type: 2}
+  meetDistance: 0
+  encounterDescription: {fileID: 11400000, guid: 8b97b105e82127a47a072b332f7ff148,
+    type: 2}
+  endingDescription: {fileID: 11400000, guid: f6ec79b2fa32c7444a3f0f3823c2e98a, type: 2}

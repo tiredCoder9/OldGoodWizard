@@ -20,18 +20,18 @@ public class MainInventoryController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            foreach (var item in inventoryList.getValue().getListRaw())
-            {
-                print(item.itemName);
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    foreach (var item in inventoryList.getValue().getListRaw())
+        //    {
+        //        print(item.itemName);
+        //    }
+        //}
 
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            inventoryList.getValue().AddList(startingItems);
-        }
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    inventoryList.getValue().AddList(startingItems);
+        //}
     }
 }
